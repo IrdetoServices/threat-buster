@@ -1,0 +1,142 @@
+[
+  {
+    "model": "landing.parentcategory",
+    "pk": 1,
+    "fields": {
+      "category": "Governance",
+      "order": 4
+    }
+  },
+  {
+    "model": "landing.parentcategory",
+    "pk": 2,
+    "fields": {
+      "category": "Construction",
+      "order": 3
+    }
+  },
+  {
+    "model": "landing.parentcategory",
+    "pk": 3,
+    "fields": {
+      "category": "Verification",
+      "order": 2
+    }
+  },
+  {
+    "model": "landing.parentcategory",
+    "pk": 4,
+    "fields": {
+      "category": "Deployment",
+      "order": 1
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 1,
+    "fields": {
+      "category": "Strategy & Metrics",
+      "order": 1,
+      "parentCategory": 1
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 2,
+    "fields": {
+      "category": "Policy & Compliance",
+      "order": 2,
+      "parentCategory": 1
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 3,
+    "fields": {
+      "category": "Education & Guidance",
+      "order": 3,
+      "parentCategory": 1
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 4,
+    "fields": {
+      "category": "Threat Assessment",
+      "order": 1,
+      "parentCategory": 2
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 5,
+    "fields": {
+      "category": "Security Requirements",
+      "order": 2,
+      "parentCategory": 2
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 6,
+    "fields": {
+      "category": "Security Architecture",
+      "order": 3,
+      "parentCategory": 2
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 7,
+    "fields": {
+      "category": "Design Review",
+      "order": 1,
+      "parentCategory": 3
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 8,
+    "fields": {
+      "category": "Code Review",
+      "order": 2,
+      "parentCategory": 3
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 9,
+    "fields": {
+      "category": "Security Testing",
+      "order": 3,
+      "parentCategory": 3
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 10,
+    "fields": {
+      "category": "Vulnerability Management",
+      "order": 1,
+      "parentCategory": 4
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 11,
+    "fields": {
+      "category": "Environment Hardening",
+      "order": 2,
+      "parentCategory": 4
+    }
+  },
+  {
+    "model": "landing.childcategory",
+    "pk": 12,
+    "fields": {
+      "category": "Operational Enablement",
+      "order": 3,
+      "parentCategory": 4
+    }
+  }
+]

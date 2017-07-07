@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'landing:profile' %}">Profiles</a></li>
+        <li><a href="{% url 'landing:sites' %}">Sites</a></li>
+        <li><a href="{% url 'landing:site-details' object.id %}">Sites {{ object.name }}</a></li>
+        <li class="active"><a href="#">Edit</a></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <h1>Site {{ object.name }} </h1>
+    <form action="{% url 'landing:tenant-edit' object.id %}" method="post">
+        <div class="form-group">
+            {% csrf_token %}
+            <div class="form-inline">
+            {% for field in form %}
+                <fieldset class="form-group">
+                    {{ field.label_tag }} {{ field }}
+                </fieldset>
+            {% endfor %}
+            </div>
+
+            <h2>Endpoints</h2>
+            {{ endpoint_form.management_form }}
+            <div class="row">
+            <div class="col-md-2">Hostname</div>
+            <div class="col-md-2">Active</div></div>
+
+            {% for form in endpoint_form %}
+                <div class="form-inline row">
+                    <div class="col-md-2">{{ form.id }}
+                    {{  form.endpoint_hostname }}</div>
+                    <div class="col-md-2">{{ form.active }}</div>
+                </div>
+            {% endfor %}
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+        </div>
+    </form>
+{% endblock %}

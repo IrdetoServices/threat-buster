@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+    <!-- Full Width Image Header -->
+    <header class="header-image">
+        <div class="headline">
+            <div class="container">
+                <h1>Threat Buster</h1>
+                <h2>TAGLINE</h2>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <hr class="featurette-divider">
+
+        <!-- First Featurette -->
+        <div class="featurette" id="feature1">
+            <img class="featurette-image img-circle img-responsive pull-right"
+                 src="{% static 'landing/i/Totally_Socks_Donkey.png' %}">
+            <h2 class="featurette-heading">FIRST Feature
+                <span class="text-muted">Sub Tag Line</span>
+            </h2>
+            <p class="lead"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ut pharetra urna. Donec
+                scelerisque, dolor quis luctus tincidunt, ex orci dignissim elit, non tempor augue velit eget ante.
+                Mauris eleifend placerat libero id pretium. Donec orci erat, rhoncus nec lorem a, pellentesque dapibus
+                ligula. Ut congue mauris lacinia, condimentum nisl nec, dictum libero. Morbi in odio a lacus bibendum
+                sagittis. Donec id eleifend ligula. Donec fringilla luctus lacus, hendrerit rutrum neque luctus quis. Ut
+                eros risus, sollicitudin nec felis id, pharetra egestas ante. Etiam imperdiet porta leo, at blandit
+                tortor placerat vel. Etiam rutrum convallis est, eu pulvinar leo feugiat sed. Nulla magna felis,
+                volutpat ut nunc quis, placerat accumsan felis. Vestibulum ante ipsum primis in faucibus orci luctus et
+                ultrices posuere cubilia Curae; </p>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <!-- Second Featurette -->
+        <div class="featurette" id="feature2">
+            <img class="featurette-image img-circle img-responsive pull-left" src="{% static 'landing/i/Lock.png' %}">
+            <h2 class="featurette-heading">Second Feature
+                <span class="text-muted">Sub Tag Line</span>
+            </h2>
+            <p class="lead"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis ut pharetra urna. Donec
+                scelerisque, dolor quis luctus tincidunt, ex orci dignissim elit, non tempor augue velit eget ante.
+                Mauris eleifend placerat libero id pretium. Donec orci erat, rhoncus nec lorem a, pellentesque dapibus
+                ligula. Ut congue mauris lacinia, condimentum nisl nec, dictum libero. Morbi in odio a lacus bibendum
+                sagittis. Donec id eleifend ligula. Donec fringilla luctus lacus, hendrerit rutrum neque luctus quis. Ut
+                eros risus, sollicitudin nec felis id, pharetra egestas ante. Etiam imperdiet porta leo, at blandit
+                tortor placerat vel. Etiam rutrum convallis est, eu pulvinar leo feugiat sed. Nulla magna felis,
+                volutpat ut nunc quis, placerat accumsan felis. Vestibulum ante ipsum primis in faucibus orci luctus et
+                ultrices posuere cubilia Curae; </p>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <!-- Third Featurette -->
+        <div class="featurette" id="plans">
+            <img class="featurette-image img-circle img-responsive pull-right" src="{% static 'landing/i/Light.png' %}">
+            <h2 class="featurette-heading">Sign up
+                <span class="text-muted"> </span>
+            </h2>
+            <p class="lead">ThreatBuster is currently in invite only beta. <a href="{% url 'account_signup' %}">Sign
+                up here to register your interest</a></p>
+        </div>
+
+        <hr class="featurette-divider">
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Irdeto 2017</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+{% endblock content %}

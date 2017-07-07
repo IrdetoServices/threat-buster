@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li class="active"><a href="#">Profiles</a></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <h1>Profile</h1>
+    {% load account %}
+    <p> Hello {% user_display user %}</p>
+
+    <div class="row">
+        <div class="col-md-2">
+
+            <ul>
+                <li><a href="{% url 'account_change_password' %}">Change Password</a></li>
+                <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+                <li><a href="{% url 'landing:dashboard' %}">My Reports</a></li>
+                {% if user.is_superuser %}
+                    <li><a href="{% url 'admin:index' %}">Administration</a></li>
+                {% endif %}
+
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Welcome</div>
+                <div class="panel-body">
+                    <p>Welcome Text</p>
+                </div>
+            </div>
+        </div>
+
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load nvd3_tags %}
+
+{% block extra_head %}
+    {% include_chart_jscss %}
+    {% load_chart charttype chartdata chartcontainer extra %}
+{%  endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'landing:profile' %}">Profiles</a></li>
+        <li class="active"><a href="#">Dashboard</a></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <h1>Dashboard</h1>
+    {% include_container chartcontainer 400 600 %}
+
+{%  endblock %}

@@ -1,0 +1,14 @@
+db.sqlite3
+*.ids
+.idea
+*.py[cod]
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+
+.DS_Store
+
+static/*
+# Keep static placeholder
+!static/static
+components/*
