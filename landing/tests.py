@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework.test import APITestCase
 
@@ -52,7 +53,10 @@ class SurveyRestTestCase(APITestCase):
         Question.objects.create(question="Question 1", category=child1, survey=self.survey)
         Question.objects.create(question="Question 2", category=child2, survey=self.survey)
 
+        self.user = User.objects.create(username='api_test')
+
     def testApi(self):
+        self.client.force_authenticate(user=self.user)
         response = self.client.get('/api/surveys/{id}/'.format(id=self.survey.pk))
         self.assertEquals(response.data,
                           {'title': 'Test', 'question_set': [OrderedDict([('question', 'Question 1'), ('category',
