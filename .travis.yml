@@ -3,3 +3,5 @@ python: "3.6"
 services: postgresql
 install: "pip install -r requirements.txt"
 script: python manage.py test
+notifications:
+    slack: irdeto:6j6eklqTBdfaaqzttqMna9ML
