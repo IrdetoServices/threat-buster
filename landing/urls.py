@@ -1,3 +1,5 @@
+from landing.models import Survey, Question, ChildCategory, ParentCategory
+
 __copyright__ = """
 
     Copyright 2017 Irdeto BV
@@ -17,14 +19,57 @@ __copyright__ = """
 """
 __license__ = "Apache 2.0"
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 
 from landing.views import *
 from . import views
+from rest_framework import routers, serializers, viewsets
+
+
+class ParentCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ParentCategory
+        fields = ["pk", "category"]
+
+
+class ChildCategorySerializer(serializers.ModelSerializer):
+    parent_category = ParentCategorySerializer()
+
+    class Meta:
+        model = ChildCategory
+        fields = ["pk", "category", "parent_category"]
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    category = ChildCategorySerializer()
+
+    class Meta:
+        model = Question
+        fields = ['question', 'category', ]
+
+
+# Serializers define the API representation.
+class SurveySerializer(serializers.HyperlinkedModelSerializer):
+    question_set = QuestionSerializer(many=True)
+
+    class Meta:
+        model = Survey
+        fields = ['title', 'question_set']
+
+
+# ViewSets define the view behavior.
+class SurveyViewSet(viewsets.ModelViewSet):
+    queryset = Survey.objects.all()
+    serializer_class = SurveySerializer
+
+
+router = routers.DefaultRouter()
+router.register(r'surveys', SurveyViewSet)
 
 app_name = 'landing'
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r"^accounts/profile/$", views.profile, name='profile'),
-    url(r"^accounts/profile/dashboard/$", Dashboard.as_view(), name='dashboard')]
+    url(r"^accounts/profile/dashboard/$", Dashboard.as_view(), name='dashboard'),
+    url(r'^api/', include(router.urls))]

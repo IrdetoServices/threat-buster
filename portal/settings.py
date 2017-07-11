@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'djangobower',
     'django_nvd3',
     'analytical',
+    'rest_framework',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -207,3 +208,11 @@ DEFAULT_FROM_EMAIL = 'noreply@example.com'
 
 CLICKY_SITE_ID = '100957503'
 GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-78255329-1'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

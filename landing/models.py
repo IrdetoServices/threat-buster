@@ -68,7 +68,7 @@ class ParentCategory(Category):
 
 
 class ChildCategory(Category):
-    parentCategory = models.ForeignKey(ParentCategory)
+    parent_category = models.ForeignKey(ParentCategory)
 
 
 class Question(models.Model):

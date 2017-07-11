@@ -1,6 +1,7 @@
 from django.test import TestCase
+from rest_framework.test import APITestCase
 
-from landing.models import ParentCategory, ChildCategory
+from landing.models import ParentCategory, ChildCategory, Survey, Question
 
 __copyright__ = """
 
@@ -27,8 +28,8 @@ __license__ = "Apache 2.0"
 class CategoryTestCase(TestCase):
     def setUp(self):
         self.parent = ParentCategory.objects.create(category="First Category")
-        child1 = ChildCategory.objects.create(category="Child1", parentCategory=self.parent)
-        child2 = ChildCategory.objects.create(category="Child2", parentCategory=self.parent)
+        child1 = ChildCategory.objects.create(category="Child1", parent_category=self.parent)
+        child2 = ChildCategory.objects.create(category="Child2", parent_category=self.parent)
 
     def test_counting(self):
         parent = ParentCategory.objects.get(pk=self.parent.id)
@@ -37,3 +38,26 @@ class CategoryTestCase(TestCase):
     def test_summary(self):
         parent = ParentCategory.objects.get(pk=self.parent.id)
         self.assertEquals("Child1, Child2", parent.category_list())
+
+
+class SurveyRestTestCase(APITestCase):
+    def setUp(self):
+        self.parent = ParentCategory.objects.create(category="First Category")
+        child1 = ChildCategory.objects.create(category="Child1", parent_category=self.parent)
+        child2 = ChildCategory.objects.create(category="Child2", parent_category=self.parent)
+
+        self.survey = Survey.objects.create(title="Test")
+        Question.objects.create(question="Question 1", category=child1, survey=self.survey)
+        Question.objects.create(question="Question 2", category=child2, survey=self.survey)
+
+    def testApi(self):
+        response = self.client.get('/api/surveys/')
+        self.assertEquals(response.data,
+                          [{"title": "Test", "question_set": [{"question": "Question 1",
+                                                               "category": {"pk": 1, "category": "Child1",
+                                                                            "parent_category": {"pk": 1,
+                                                                                                "category": "First Category"}}},
+                                                              {"question": "Question 2",
+                                                               "category": {"pk": 2, "category": "Child2",
+                                                                            "parent_category": {"pk": 1,
+                                                                                                "category": "First Category"}}}]}])
