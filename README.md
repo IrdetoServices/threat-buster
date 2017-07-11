@@ -108,7 +108,3 @@ eb ssh
 source /opt/python/run/venv/bin/activate
 cd /opt/python/current/app
 ```
-
-# Notes/TODO
-* This is not production ready as CRUD built forms don't have proper row level security (to stop tenants changing each other)
-** To fix add one of https://www.djangopackages.com/grids/g/perms/
