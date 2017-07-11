@@ -1,7 +1,8 @@
 language: python
-python: "3.6"
+python: '3.6'
 services: postgresql
-install: "pip install -r requirements.txt"
+install: pip install -r requirements.txt
 script: python manage.py test
 notifications:
-    slack: irdeto:6j6eklqTBdfaaqzttqMna9ML
+  slack:
+    secure: hfOa+cRjg0jz28TLhh4ZqWSztqKOdCiV8DsudVNZI6Z7ZfWCsBUmn4vleVJI3e7cf+WoJ3YvPA/l/aJp0FAVWXp/CGUG+alYA34rMx7LXxHa1+3bCCynFIPXTkmYCgHK5rborG/ARrlkx/AaT1sfbeMljpndK6esUXj1PSfeE0ksK1XbCd2jbYAeiBwduy7mPErHZj2wnnRlgO80Q3HrqeUWRSYtxaWn/bueO/LVSdjNlXcRUEXZ+omeQGmjuoEQctCpa8ysvm+q7xdrYvuvlKsLnvLo5lmNxPcK93BaS5DXLbVrx3W9jdVdGkDQK9Qmv2V6Dwx8jFB279f9XYiRtdTbdwumYCIqXsFu3y14850u6So6nxshy2MxJcY+ljPMClkm6RIo+qrAaPk9Tw3+Gu8svfGnvCwuLwbJLdz85850XaZKgtWBdrwDIiZrRGDTMGKp/o2gE24eqJ2wbu/tQdz4cIYhb7j/4+Yt9WS35lsKh9rXkxGcSwZKN+e1QwC/TCf55+YC6xc95/cBMwhp1djGlDUmRKaoZhLYHwIYTJcNBDoURIYB7IObdPU92e0sqosxRkOAoy0hvu8qSBztsEApQdiOyp0ysclc6HYRKwQd5a3FT7whhaagsaGg+zI/u+GNYNdVidfCLTzTgbX7mc4nW/bGvMB9n7edvsyeSd4=
