@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.test import TestCase
 from rest_framework.test import APITestCase
 
@@ -51,13 +53,33 @@ class SurveyRestTestCase(APITestCase):
         Question.objects.create(question="Question 2", category=child2, survey=self.survey)
 
     def testApi(self):
-        response = self.client.get('/api/surveys/')
+        response = self.client.get('/api/surveys/{id}/'.format(id=self.survey.pk))
         self.assertEquals(response.data,
-                          [{"title": "Test", "question_set": [{"question": "Question 1",
-                                                               "category": {"pk": 1, "category": "Child1",
-                                                                            "parent_category": {"pk": 1,
-                                                                                                "category": "First Category"}}},
-                                                              {"question": "Question 2",
-                                                               "category": {"pk": 2, "category": "Child2",
-                                                                            "parent_category": {"pk": 1,
-                                                                                                "category": "First Category"}}}]}])
+                          {'title': 'Test', 'question_set': [OrderedDict([('question', 'Question 1'), ('category',
+                                                                                                       OrderedDict(
+                                                                                                           [('pk', 5), (
+                                                                                                               'category',
+                                                                                                               'Child1'),
+                                                                                                            (
+                                                                                                                'parent_category',
+                                                                                                                OrderedDict(
+                                                                                                                    [(
+                                                                                                                        'pk',
+                                                                                                                        3),
+                                                                                                                        (
+                                                                                                                            'category',
+                                                                                                                            'First Category')]))]))]),
+                                                             OrderedDict([('question', 'Question 2'), ('category',
+                                                                                                       OrderedDict(
+                                                                                                           [('pk', 6), (
+                                                                                                               'category',
+                                                                                                               'Child2'),
+                                                                                                            (
+                                                                                                                'parent_category',
+                                                                                                                OrderedDict(
+                                                                                                                    [(
+                                                                                                                        'pk',
+                                                                                                                        3),
+                                                                                                                        (
+                                                                                                                            'category',
+                                                                                                                            'First Category')]))]))])]})
