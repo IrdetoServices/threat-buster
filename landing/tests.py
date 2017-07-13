@@ -1,8 +1,8 @@
-from collections import OrderedDict
-
 from django.contrib.auth.models import User
 from django.test import TestCase
+from rest_framework.parsers import JSONParser
 from rest_framework.test import APITestCase
+from six import BytesIO
 
 from landing.models import ParentCategory, ChildCategory, Survey, Question
 
@@ -58,32 +58,17 @@ class SurveyRestTestCase(APITestCase):
     def testApi(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.get('/api/surveys/{id}/'.format(id=self.survey.pk))
-        self.assertEquals(response.data,
-                          {'title': 'Test', 'question_set': [OrderedDict([('question', 'Question 1'), ('category',
-                                                                                                       OrderedDict(
-                                                                                                           [('pk', 5), (
-                                                                                                               'category',
-                                                                                                               'Child1'),
-                                                                                                            (
-                                                                                                                'parent_category',
-                                                                                                                OrderedDict(
-                                                                                                                    [(
-                                                                                                                        'pk',
-                                                                                                                        3),
-                                                                                                                        (
-                                                                                                                            'category',
-                                                                                                                            'First Category')]))]))]),
-                                                             OrderedDict([('question', 'Question 2'), ('category',
-                                                                                                       OrderedDict(
-                                                                                                           [('pk', 6), (
-                                                                                                               'category',
-                                                                                                               'Child2'),
-                                                                                                            (
-                                                                                                                'parent_category',
-                                                                                                                OrderedDict(
-                                                                                                                    [(
-                                                                                                                        'pk',
-                                                                                                                        3),
-                                                                                                                        (
-                                                                                                                            'category',
-                                                                                                                            'First Category')]))]))])]})
+        stream = BytesIO(response.content)
+        responseSurvey = JSONParser().parse(stream)
+        self.assertIsNotNone(responseSurvey)
+        self.assertEquals(responseSurvey['title'], self.survey.title)
+        self.assertEquals(responseSurvey['question_set'][0]['question'], "Question 1")
+
+
+class DataLoadTestCase(TestCase):
+    fixtures = ['10_create_categories', '20_questions.json']
+
+    def testDataLoaded(self):
+        self.assertGreater(ParentCategory.objects.count(), 0)
+        self.assertGreater(Survey.objects.count(), 0)
+        self.assertGreater(Question.objects.count(), 0)

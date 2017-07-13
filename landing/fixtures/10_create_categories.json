@@ -37,7 +37,7 @@
     "fields": {
       "category": "Strategy & Metrics",
       "order": 1,
-      "parentCategory": 1
+      "parent_category": 1
     }
   },
   {
@@ -46,7 +46,7 @@
     "fields": {
       "category": "Policy & Compliance",
       "order": 2,
-      "parentCategory": 1
+      "parent_category": 1
     }
   },
   {
@@ -55,7 +55,7 @@
     "fields": {
       "category": "Education & Guidance",
       "order": 3,
-      "parentCategory": 1
+      "parent_category": 1
     }
   },
   {
@@ -64,7 +64,7 @@
     "fields": {
       "category": "Threat Assessment",
       "order": 1,
-      "parentCategory": 2
+      "parent_category": 2
     }
   },
   {
@@ -73,7 +73,7 @@
     "fields": {
       "category": "Security Requirements",
       "order": 2,
-      "parentCategory": 2
+      "parent_category": 2
     }
   },
   {
@@ -82,7 +82,7 @@
     "fields": {
       "category": "Security Architecture",
       "order": 3,
-      "parentCategory": 2
+      "parent_category": 2
     }
   },
   {
@@ -91,7 +91,7 @@
     "fields": {
       "category": "Design Review",
       "order": 1,
-      "parentCategory": 3
+      "parent_category": 3
     }
   },
   {
@@ -100,7 +100,7 @@
     "fields": {
       "category": "Code Review",
       "order": 2,
-      "parentCategory": 3
+      "parent_category": 3
     }
   },
   {
@@ -109,7 +109,7 @@
     "fields": {
       "category": "Security Testing",
       "order": 3,
-      "parentCategory": 3
+      "parent_category": 3
     }
   },
   {
@@ -118,7 +118,7 @@
     "fields": {
       "category": "Vulnerability Management",
       "order": 1,
-      "parentCategory": 4
+      "parent_category": 4
     }
   },
   {
@@ -127,7 +127,7 @@
     "fields": {
       "category": "Environment Hardening",
       "order": 2,
-      "parentCategory": 4
+      "parent_category": 4
     }
   },
   {
@@ -136,7 +136,7 @@
     "fields": {
       "category": "Operational Enablement",
       "order": 3,
-      "parentCategory": 4
+      "parent_category": 4
     }
   }
 ]
