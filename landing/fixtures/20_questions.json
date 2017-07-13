@@ -1,0 +1,779 @@
+[
+  {
+    "model": "landing.survey",
+    "pk": 1,
+    "fields": {
+      "title": "Open Samm"
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 1,
+    "fields": {
+      "question": "Is there a software security assurance program already in place?",
+      "order": 1,
+      "survey": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 2,
+    "fields": {
+      "question": "Do most of the business stakeholders understand your organization\u2019s risk profile?",
+      "order": 2,
+      "survey": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 3,
+    "fields": {
+      "question": "Is most of your development staff aware of future plans for the assurance program?",
+      "order": 3,
+      "survey": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 4,
+    "fields": {
+      "question": "Are most of your applications and resources categorized by risk?",
+      "order": 4,
+      "survey": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 5,
+    "fields": {
+      "question": "Are risk ratings used to tailor the required assurance activities?",
+      "order": 5,
+      "survey": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 6,
+    "fields": {
+      "question": "Does most of the organization know about what\u2019s required based on risk ratings?",
+      "order": 6,
+      "survey": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 7,
+    "fields": {
+      "question": "Is per-project data for cost of assurance activities collected?",
+      "order": 7,
+      "survey": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 8,
+    "fields": {
+      "question": "Does your organization regularly compare your security spend with other organizations?",
+      "order": 8,
+      "survey": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 9,
+    "fields": {
+      "question": "Do most project stakeholders know their project\u2019s compliance status?",
+      "order": 10,
+      "survey": 1,
+      "category": 2
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 10,
+    "fields": {
+      "question": "Are compliance requirements specifically considered by project teams?",
+      "order": 12,
+      "survey": 1,
+      "category": 2
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 11,
+    "fields": {
+      "question": "Does the organization utilize a set of policies and standards to control software development?",
+      "order": 11,
+      "survey": 1,
+      "category": 2
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 12,
+    "fields": {
+      "question": "Are project teams able to request an audit for compliance with policies and standards?",
+      "order": 13,
+      "survey": 1,
+      "category": 2
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 13,
+    "fields": {
+      "question": "Are projects periodically audited to ensure a baseline of compliance with policies and standards?",
+      "order": 14,
+      "survey": 1,
+      "category": 2
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 14,
+    "fields": {
+      "question": "Does the organization systematically use audits to collect and control compliance evidence?",
+      "order": 15,
+      "survey": 1,
+      "category": 2
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 15,
+    "fields": {
+      "question": "Have most developers been given highlevel security awareness training?",
+      "order": 20,
+      "survey": 1,
+      "category": 3
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 16,
+    "fields": {
+      "question": "Does each project team have access to secure development best practices and guidance?",
+      "order": 21,
+      "survey": 1,
+      "category": 3
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 17,
+    "fields": {
+      "question": "Are most roles in the development process given role-specific training and guidance?",
+      "order": 22,
+      "survey": 1,
+      "category": 3
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 18,
+    "fields": {
+      "question": "Are most stakeholders able to pull in security coaches for use on projects?",
+      "order": 23,
+      "survey": 1,
+      "category": 3
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 19,
+    "fields": {
+      "question": "Is security-related guidance centrally controlled and consistently distributed throughout the organization?",
+      "order": 24,
+      "survey": 1,
+      "category": 3
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 20,
+    "fields": {
+      "question": "Are most people tested to ensure a baseline skillset for secure development practices?",
+      "order": 25,
+      "survey": 1,
+      "category": 3
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 21,
+    "fields": {
+      "question": "Do most projects in your organization consider and document likely threats?",
+      "order": 30,
+      "survey": 1,
+      "category": 4
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 22,
+    "fields": {
+      "question": "Does your organization understand and document the types of attackers it faces?",
+      "order": 31,
+      "survey": 1,
+      "category": 4
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 23,
+    "fields": {
+      "question": "Do project teams regularly analyze functional requirements for likely abuses?",
+      "order": 32,
+      "survey": 1,
+      "category": 4
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 24,
+    "fields": {
+      "question": "Do project teams use a method of rating threats for relative comparison?",
+      "order": 33,
+      "survey": 1,
+      "category": 4
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 25,
+    "fields": {
+      "question": "Are stakeholders aware of relevant threats and ratings?",
+      "order": 34,
+      "survey": 1,
+      "category": 4
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 26,
+    "fields": {
+      "question": "Do project teams specifically consider risk from external software?",
+      "order": 35,
+      "survey": 1,
+      "category": 4
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 27,
+    "fields": {
+      "question": "Are all protection mechanisms and controls captured and mapped back to threats?",
+      "order": 36,
+      "survey": 1,
+      "category": 4
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 28,
+    "fields": {
+      "question": "Do most project teams specify some security requirements during development?",
+      "order": 40,
+      "survey": 1,
+      "category": 5
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 29,
+    "fields": {
+      "question": "Do project teams pull requirements from bestpractices and compliance guidance?",
+      "order": 41,
+      "survey": 1,
+      "category": 5
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 30,
+    "fields": {
+      "question": "Are most stakeholders reviewing access control matrices for relevant projects?",
+      "order": 42,
+      "survey": 1,
+      "category": 5
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 31,
+    "fields": {
+      "question": "Are project teams specifying requirements based on feedback from other security activities?",
+      "order": 43,
+      "survey": 1,
+      "category": 5
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 32,
+    "fields": {
+      "question": "Are most stakeholders reviewing vendor agreements for security requirements?",
+      "order": 44,
+      "survey": 1,
+      "category": 5
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 33,
+    "fields": {
+      "question": "Are the security requirements specified by project teams being audited?",
+      "order": 45,
+      "survey": 1,
+      "category": 5
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 34,
+    "fields": {
+      "question": "Are project teams provided with a list of recommended third-party components?",
+      "order": 50,
+      "survey": 1,
+      "category": 6
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 35,
+    "fields": {
+      "question": "Are most project teams aware of secure design principles and applying them?",
+      "order": 51,
+      "survey": 1,
+      "category": 6
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 36,
+    "fields": {
+      "question": "Do you advertise shared security services with guidance for project teams?",
+      "order": 52,
+      "survey": 1,
+      "category": 6
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 37,
+    "fields": {
+      "question": "Are project teams provided with prescriptive design patterns based on their application architecture?",
+      "order": 53,
+      "survey": 1,
+      "category": 6
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 38,
+    "fields": {
+      "question": "Are project teams building software from centrally controlled platforms and frameworks?",
+      "order": 54,
+      "survey": 1,
+      "category": 6
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 39,
+    "fields": {
+      "question": "Are project teams being audited for usage of secure architecture components?",
+      "order": 55,
+      "survey": 1,
+      "category": 6
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 40,
+    "fields": {
+      "question": "Do project teams document the attack perimeter of software designs?",
+      "order": 60,
+      "survey": 1,
+      "category": 7
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 41,
+    "fields": {
+      "question": "Do project teams check software designs against known security risks?",
+      "order": 61,
+      "survey": 1,
+      "category": 7
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 42,
+    "fields": {
+      "question": "Do most project teams specifically analyze design elements for security mechanisms?",
+      "order": 62,
+      "survey": 1,
+      "category": 7
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 43,
+    "fields": {
+      "question": "Are most project stakeholders aware of how to obtain a formal design review?",
+      "order": 63,
+      "survey": 1,
+      "category": 7
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 44,
+    "fields": {
+      "question": "Does the design review process incorporate detailed data-level analysis?",
+      "order": 64,
+      "survey": 1,
+      "category": 7
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 45,
+    "fields": {
+      "question": "Does routine project audit require a baseline for design review results?",
+      "order": 65,
+      "survey": 1,
+      "category": 7
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 46,
+    "fields": {
+      "question": "Do most project teams have review checklists based on common problems?",
+      "order": 70,
+      "survey": 1,
+      "category": 8
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 47,
+    "fields": {
+      "question": "Are project teams generally performing review of selected high-risk code?",
+      "order": 71,
+      "survey": 1,
+      "category": 8
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 48,
+    "fields": {
+      "question": "Can most project teams access automated code analysis tools to find security problems?",
+      "order": 72,
+      "survey": 1,
+      "category": 8
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 49,
+    "fields": {
+      "question": "Do most stakeholders consistently require and review results from code reviews?",
+      "order": 73,
+      "survey": 1,
+      "category": 8
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 50,
+    "fields": {
+      "question": "Do project teams utilize automation to check code against application-specific coding standards?",
+      "order": 74,
+      "survey": 1,
+      "category": 8
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 51,
+    "fields": {
+      "question": "Does routine project audit require a baseline for code review results prior to release?",
+      "order": 75,
+      "survey": 1,
+      "category": 8
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 52,
+    "fields": {
+      "question": "Are projects specifying some security tests based on requirements?",
+      "order": 80,
+      "survey": 1,
+      "category": 9
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 53,
+    "fields": {
+      "question": "Do most projects perform penetration tests prior to release?",
+      "order": 81,
+      "survey": 1,
+      "category": 9
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 54,
+    "fields": {
+      "question": "Are most stakeholders aware of the security test status prior to release?",
+      "order": 82,
+      "survey": 1,
+      "category": 9
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 55,
+    "fields": {
+      "question": "Are projects using automation to evaluate security test cases?",
+      "order": 83,
+      "survey": 1,
+      "category": 9
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 56,
+    "fields": {
+      "question": "Do most projects follow a consistent process to evaluate and report on security tests to stakeholders?",
+      "order": 84,
+      "survey": 1,
+      "category": 9
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 57,
+    "fields": {
+      "question": "Are security test cases comprehensively generated for application-specific logic?",
+      "order": 85,
+      "survey": 1,
+      "category": 9
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 58,
+    "fields": {
+      "question": "Do routine project audits demand minimum standard results from security testing?",
+      "order": 86,
+      "survey": 1,
+      "category": 9
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 59,
+    "fields": {
+      "question": "Do most projects have a point of contact for security issues?",
+      "order": 90,
+      "survey": 1,
+      "category": 10
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 60,
+    "fields": {
+      "question": "Does your organization have an assigned security response team?",
+      "order": 91,
+      "survey": 1,
+      "category": 10
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 61,
+    "fields": {
+      "question": "Are most project teams aware of their security point(s) of contact and response team(s)?",
+      "order": 92,
+      "survey": 1,
+      "category": 10
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 62,
+    "fields": {
+      "question": "Does the organization utilize a consistent process for incident reporting and handling?",
+      "order": 93,
+      "survey": 1,
+      "category": 10
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 63,
+    "fields": {
+      "question": "Are most project stakeholders aware of relevant security disclosures related to their software projects?",
+      "order": 94,
+      "survey": 1,
+      "category": 10
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 64,
+    "fields": {
+      "question": "Are most incidents inspected for root causes to generate further recommendations?",
+      "order": 95,
+      "survey": 1,
+      "category": 10
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 65,
+    "fields": {
+      "question": "Do most projects consistently collect and report data and metrics related to incidents?",
+      "order": 96,
+      "survey": 1,
+      "category": 10
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 66,
+    "fields": {
+      "question": "Do the majority of projects document some requirements for the operational environment?",
+      "order": 100,
+      "survey": 1,
+      "category": 11
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 67,
+    "fields": {
+      "question": "Do most projects check for security updates to third-party software components?",
+      "order": 101,
+      "survey": 1,
+      "category": 11
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 68,
+    "fields": {
+      "question": "Is a consistent process used to apply upgrades and patches to critical dependencies?",
+      "order": 102,
+      "survey": 1,
+      "category": 11
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 69,
+    "fields": {
+      "question": "Do most project leverage automation to check application and environment health?",
+      "order": 103,
+      "survey": 1,
+      "category": 11
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 70,
+    "fields": {
+      "question": "Are stakeholders aware of options for additional tools to protect software while running in operations?",
+      "order": 104,
+      "survey": 1,
+      "category": 11
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 71,
+    "fields": {
+      "question": "Does routine audit check most projects for baseline environment health?",
+      "order": 105,
+      "survey": 1,
+      "category": 11
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 72,
+    "fields": {
+      "question": "Do you deliver security notes with the majority of software releases?",
+      "order": 110,
+      "survey": 1,
+      "category": 12
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 73,
+    "fields": {
+      "question": "Are security-related alerts and error conditions documented for most projects?",
+      "order": 111,
+      "survey": 1,
+      "category": 12
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 74,
+    "fields": {
+      "question": "Are most project utilizing a change management process that\u2019s well understood?",
+      "order": 112,
+      "survey": 1,
+      "category": 12
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 75,
+    "fields": {
+      "question": "Do project teams deliver an operational security guide with each product release?",
+      "order": 113,
+      "survey": 1,
+      "category": 12
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 76,
+    "fields": {
+      "question": "Are most projects being audited to check each release for appropriate operational security information?",
+      "order": 114,
+      "survey": 1,
+      "category": 12
+    }
+  },
+  {
+    "model": "landing.question",
+    "pk": 77,
+    "fields": {
+      "question": "Is code signing routinely performed on software components using a consistent process?",
+      "order": 115,
+      "survey": 1,
+      "category": 12
+    }
+  }
+]
