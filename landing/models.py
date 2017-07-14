@@ -17,10 +17,9 @@ __copyright__ = """
 """
 __license__ = "Apache 2.0"
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.db import models
-# Plan represents the billing plans proposed by Threat-Buster
 from django.forms.models import ModelForm
 
 
@@ -29,6 +28,7 @@ class Tenant(models.Model):
     name = models.CharField(max_length=1024)
     active = models.BooleanField(default=True)
     users = models.ManyToManyField(User)
+    group = models.ForeignKey(Group, blank=True, null=True)
 
     class Meta:
         verbose_name = "tenant"
@@ -81,10 +81,19 @@ class Question(models.Model):
         ordering = ['order']
 
 
+class SurveyResultManager(models.Manager):
+    def get_queryset(self):
+        query_set = super(SurveyResultManager, self).get_queryset()
+        # get_current_user() --https://github.com/nebstrebor/django-threadlocals
+        return query_set
+
+
 class SurveyResults(models.Model):
     date = models.DateField(auto_now=True)
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     survey = models.ForeignKey(Survey)
+
+    object = SurveyResultManager()
 
 
 class SurveyResult(models.Model):
@@ -97,5 +106,4 @@ class TenantForm(ModelForm):
     class Meta:
         model = Tenant
         fields = ['name', 'active']
-
 

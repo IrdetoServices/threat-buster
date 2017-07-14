@@ -62,6 +62,8 @@ class SurveyViewSet(viewsets.ModelViewSet):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
 
+    # add rest_framework.filters.DjangoObjectPermissionsFilter as filter
+
 
 router = routers.DefaultRouter()
 router.register(r'surveys', SurveyViewSet)
