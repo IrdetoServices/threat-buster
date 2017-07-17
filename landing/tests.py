@@ -66,6 +66,61 @@ class SurveyRestTestCase(APITestCase):
         self.assertEquals(responseSurvey['question_set'][0]['question'], "Question 1")
 
 
+class TenantPermsTestCase(APITestCase):
+    def setUp(self):
+        self.tenant1 = Tenant.objects.create(name="Tenant Test Case 1")
+        self.tenant2 = Tenant.objects.create(name="Tenant Test Case 2")
+        self.user1 = User.objects.create(username='user1')
+        self.user2 = User.objects.create(username='user2')
+        self.tenant1.users.add(self.user1)
+        self.tenant2.users.add(self.user2)
+        self.tenant1.save()
+        self.tenant2.save()
+
+    def testVerifyRead(self):
+        reponse_user1 = self.loadTenants(self.user1)
+        self.assertEquals(len(reponse_user1), 1)
+        self.assertEquals(reponse_user1[0]['name'], "Tenant Test Case 1")
+
+        response_user2 = self.loadTenants(self.user2)
+        self.assertEquals(len(response_user2), 1)
+        self.assertEquals(response_user2[0]['name'], "Tenant Test Case 2")
+
+        response_user1_tenant1 = self.loadTenant(self.user1, self.tenant1.id)
+        self.assertEquals(response_user1_tenant1['name'], "Tenant Test Case 1")
+
+        response_user2_tenant1 = self.loadTenant(self.user2, self.tenant1.id)
+        self.assertEquals(response_user2_tenant1['detail'], "Not found.")
+
+    def testVerifyWrite(self):
+        response_user1_tenant1 = self.loadTenant(self.user1, self.tenant1.id)
+        response_user1_tenant1['name'] = "bob"
+        self.client.force_authenticate(user=self.user1)
+        post_response = self.client.put("/api/tenants/{}/".format(self.tenant1.id), response_user1_tenant1)
+        self.assertEquals(post_response.status_code, 200)
+        tenant_reload = Tenant.objects.get(id=self.tenant1.id)
+        self.assertEquals(tenant_reload.name, "bob")
+
+        self.client.force_authenticate(user=self.user2)
+        response_user1_tenant1['name'] = "bob1"
+        post_response = self.client.put("/api/tenants/{}/".format(self.tenant1.id), response_user1_tenant1)
+        self.assertEquals(post_response.status_code, 404)
+        tenant_reload = Tenant.objects.get(id=self.tenant1.id)
+        self.assertEquals(tenant_reload.name, "bob")
+
+    def loadTenant(self, user, id):
+        self.client.force_authenticate(user=user)
+        response = self.client.get("/api/tenants/{}/".format(id))
+        stream = BytesIO(response.content)
+        return JSONParser().parse(stream)
+
+    def loadTenants(self, user):
+        self.client.force_authenticate(user=user)
+        response = self.client.get('/api/tenants/')
+        stream = BytesIO(response.content)
+        return JSONParser().parse(stream)
+
+
 class DataLoadTestCase(TestCase):
     fixtures = ['10_create_categories', '20_questions.json']
 
@@ -88,6 +143,8 @@ class TenantGroupsTestCase(TestCase):
         self.assertEquals(tenant.name, "tenant")
         self.assertIsNotNone(tenant.group)
         self.assertEquals(tenant.group.name, "TenantGroup{}".format(tenant.pk))
+        self.assertTrue(ObjectPermissionChecker(tenant.group).has_perm('view_tenant', tenant))
+        self.assertTrue(ObjectPermissionChecker(tenant.group).has_perm('change_tenant', tenant))
 
     def testTenantAddingUserOnCreation(self):
         tenant = Tenant.objects.create(name='tenantAddingUsers')

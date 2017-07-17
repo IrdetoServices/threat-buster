@@ -34,6 +34,8 @@ def tenant_callback(sender, instance, **kwargs):
     checker = ObjectPermissionChecker(instance.group)
     if not checker.has_perm('view_tenant', instance):
         assign_perm('view_tenant', instance.group, instance)
+    if not checker.has_perm('change_tenant', instance):
+        assign_perm('change_tenant', instance.group, instance)
 
     # sync users in group with current list
     usersInGroup = User.objects.filter(groups=instance.group)

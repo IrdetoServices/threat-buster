@@ -20,7 +20,6 @@ __license__ = "Apache 2.0"
 from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.forms.models import ModelForm
 
 
 # Tenant represents the organization using the service
@@ -106,8 +105,4 @@ class SurveyResult(models.Model):
     survey_results = models.ForeignKey(SurveyResults)
 
 
-class TenantForm(ModelForm):
-    class Meta:
-        model = Tenant
-        fields = ['name', 'active']
 

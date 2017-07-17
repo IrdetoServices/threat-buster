@@ -1,3 +1,8 @@
+from rest_framework import viewsets, filters
+
+from landing.models import Survey, Tenant
+from landing.serializers import SurveySerializer, TenantSerializer
+
 __copyright__ = """
 
     Copyright 2017 Irdeto BV
@@ -57,3 +62,16 @@ class Dashboard(TemplateView):
             }
         }
         return data
+
+
+class SurveyViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Survey.objects.all()
+    serializer_class = SurveySerializer
+
+
+class TenantViewSet(viewsets.ModelViewSet):
+    queryset = Tenant.objects.all()
+    serializer_class = TenantSerializer
+
+    filter_backends = (filters.DjangoObjectPermissionsFilter,)
+    # permission_classes = (CustomObjectPermissions,)
