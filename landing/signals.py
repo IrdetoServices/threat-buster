@@ -14,18 +14,14 @@
 import logging
 
 from django.contrib.auth.models import User, Group
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.dispatch import receiver
+from guardian.core import ObjectPermissionChecker
+from guardian.shortcuts import assign_perm
 
 from landing.models import Tenant
 
 logger = logging.getLogger(__name__)
-
-
-@receiver(pre_save, sender=Tenant)
-def tenant_pre_save_callback(sender, instance, **kwargs):
-    logger.debug("Tenant about to save: {instance}".format(instance=instance))
-
 
 @receiver(post_save, sender=Tenant)
 def tenant_callback(sender, instance, **kwargs):
@@ -34,6 +30,10 @@ def tenant_callback(sender, instance, **kwargs):
     if instance.group is None:
         # Create group for Tenant
         instance.group = Group.objects.create(name="TenantGroup{}".format(instance.pk))
+
+    checker = ObjectPermissionChecker(instance.group)
+    if not checker.has_perm('view_tenant', instance):
+        assign_perm('view_tenant', instance.group, instance)
 
     # sync users in group with current list
     usersInGroup = User.objects.filter(groups=instance.group)

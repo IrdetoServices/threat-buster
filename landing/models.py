@@ -34,6 +34,10 @@ class Tenant(models.Model):
         verbose_name = "tenant"
         verbose_name_plural = "tenants"
 
+        permissions = (
+            ('view_tenant', 'View tenant'),
+        )
+
     def get_absolute_url(self):
         return reverse('landing:site-details', args={self.pk})
 

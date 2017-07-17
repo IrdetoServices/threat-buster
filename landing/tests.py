@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
+from guardian.core import ObjectPermissionChecker
 from rest_framework.parsers import JSONParser
 from rest_framework.test import APITestCase
 from six import BytesIO
@@ -100,12 +101,15 @@ class TenantGroupsTestCase(TestCase):
         self.assertIsNotNone(tenant.users)
         self.assertTrue(self.user1.groups.filter(pk=tenant.group.pk).exists())
         self.assertTrue(tenant.users.filter(pk=self.user1.pk).exists())
+        self.assertTrue(ObjectPermissionChecker(tenant.group).has_perm('view_tenant', tenant))
 
     def testTenantAddingUserAfterCreation(self):
         tenant = Tenant.objects.create(name='tenantAddingUsers')
         tenant.save()
+        self.assertFalse(self.user1.has_perm('view_tenant', tenant))
         tenant.users.add(self.user1)
         tenant.save()
+        self.assertTrue(self.user1.has_perm('view_tenant', tenant))
 
         tenant_loaded = Tenant.objects.filter(pk=tenant.pk)
         self.assertIsNotNone(tenant_loaded)
@@ -114,6 +118,7 @@ class TenantGroupsTestCase(TestCase):
         self.assertIsNotNone(tenant.users)
         self.assertTrue(self.user1.groups.filter(pk=tenant.group.pk).exists())
         self.assertTrue(tenant.users.filter(pk=self.user1.pk).exists())
+        self.assertTrue(ObjectPermissionChecker(tenant.group).has_perm('view_tenant', tenant))
 
     def testTenantRemovingUsers(self):
         tenant = Tenant.objects.create(name='tenantRemovingUsers')
@@ -134,7 +139,9 @@ class TenantGroupsTestCase(TestCase):
         tenant.save()
 
         self.assertTrue(self.user1.groups.filter(pk=tenant.group.pk).exists())
+        self.assertTrue(self.user1.has_perm('view_tenant', tenant))
         self.assertFalse(self.user2.groups.filter(pk=tenant.group.pk).exists())
+        self.assertFalse(self.user2.has_perm('view_tenant', tenant))
 
         self.assertTrue(tenant.users.filter(pk=self.user1.pk).exists())
         self.assertFalse(tenant.users.filter(pk=self.user2.pk).exists())
