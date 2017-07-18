@@ -26,6 +26,7 @@ from . import views
 router = routers.DefaultRouter()
 router.register(r'tenants', TenantViewSet)
 router.register(r'surveys', SurveyViewSet)
+router.register(r'survey_results', SurveyResultsViewSet)
 
 app_name = 'landing'
 

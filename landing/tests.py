@@ -202,3 +202,35 @@ class TenantGroupsTestCase(TestCase):
 
         self.assertTrue(tenant.users.filter(pk=self.user1.pk).exists())
         self.assertFalse(tenant.users.filter(pk=self.user2.pk).exists())
+
+
+class QuestionRestTestCase(APITestCase):
+    def setUp(self):
+        self.tenant1 = Tenant.objects.create(name="Tenant Test Case 1")
+        self.tenant2 = Tenant.objects.create(name="Tenant Test Case 2")
+        self.user1 = User.objects.create(username='user1')
+        self.user2 = User.objects.create(username='user2')
+        self.tenant1.users.add(self.user1)
+        self.tenant2.users.add(self.user2)
+        self.tenant1.save()
+        self.tenant2.save()
+        self.parent = ParentCategory.objects.create(category="First Category")
+        child1 = ChildCategory.objects.create(category="Child1", parent_category=self.parent)
+        child2 = ChildCategory.objects.create(category="Child2", parent_category=self.parent)
+        self.survey = Survey.objects.create(title="Test")
+        Question.objects.create(question="Question 1", category=child1, survey=self.survey)
+        Question.objects.create(question="Question 2", category=child2, survey=self.survey)
+
+    def testSurveyCompletion(self):
+        self.client.force_login(self.user1)
+        post = {"date": "2017-07-18",
+                "tenant": self.tenant1.id,
+                "survey": self.survey.id,
+                "survey_results": []}
+
+        response = self.client.post("/api/survey_results/", post)
+        self.assertEquals(response.status_code, 201)
+
+        self.client.force_login(self.user2)
+        response2 = self.client.post("/api/survey_results/", post)
+        self.assertEquals(response2.status_code, 403)

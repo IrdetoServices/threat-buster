@@ -18,7 +18,6 @@ __copyright__ = """
 __license__ = "Apache 2.0"
 
 from django.contrib.auth.models import User, Group
-from django.core.urlresolvers import reverse
 from django.db import models
 
 
@@ -37,8 +36,8 @@ class Tenant(models.Model):
             ('view_tenant', 'View tenant'),
         )
 
-    def get_absolute_url(self):
-        return reverse('landing:site-details', args={self.pk})
+    def __str__(self):
+        return self.name
 
 
 class Survey(models.Model):
@@ -84,19 +83,10 @@ class Question(models.Model):
         ordering = ['order']
 
 
-class SurveyResultManager(models.Manager):
-    def get_queryset(self):
-        query_set = super(SurveyResultManager, self).get_queryset()
-        # get_current_user() --https://github.com/nebstrebor/django-threadlocals
-        return query_set
-
-
 class SurveyResults(models.Model):
     date = models.DateField(auto_now=True)
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     survey = models.ForeignKey(Survey)
-
-    object = SurveyResultManager()
 
 
 class SurveyResult(models.Model):

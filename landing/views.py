@@ -1,7 +1,8 @@
 from rest_framework import viewsets, filters
 
-from landing.models import Survey, Tenant
-from landing.serializers import SurveySerializer, TenantSerializer
+from landing.filters import TenantFilter, TenantPermission
+from landing.models import Survey, Tenant, SurveyResults
+from landing.serializers import SurveySerializer, TenantSerializer, SurveyResultsSerializer
 
 __copyright__ = """
 
@@ -74,4 +75,11 @@ class TenantViewSet(viewsets.ModelViewSet):
     serializer_class = TenantSerializer
 
     filter_backends = (filters.DjangoObjectPermissionsFilter,)
-    # permission_classes = (CustomObjectPermissions,)
+
+
+class SurveyResultsViewSet(viewsets.ModelViewSet):
+    queryset = SurveyResults.objects.all()
+    serializer_class = SurveyResultsSerializer
+
+    filter_backends = (TenantFilter,)
+    permission_classes = (TenantPermission,)
