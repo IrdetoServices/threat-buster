@@ -16,13 +16,3 @@ __copyright__ = """
 
 """
 __license__ = "Apache 2.0"
-
-from django.apps import AppConfig
-
-
-class LandingConfig(AppConfig):
-    name = 'landing'
-
-    def ready(self):
-        # noinspection PyUnresolvedReferences
-        import landing.signals

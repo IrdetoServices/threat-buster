@@ -1,3 +1,5 @@
+from guardian.admin import GuardedModelAdmin
+
 __copyright__ = """
 
     Copyright 2017 Irdeto BV
@@ -26,10 +28,10 @@ from .models import Tenant, Survey, Question, ParentCategory, ChildCategory
 class UsersInLine(admin.TabularInline):
     model = Tenant.users.through
     extra = 3
-    can_delete = False
+    can_delete = True
 
 
-class TenantAdmin(admin.ModelAdmin):
+class TenantAdmin(GuardedModelAdmin):
     fields = ['name', 'active']
     inlines = [UsersInLine]
     list_display = ('name', 'active')

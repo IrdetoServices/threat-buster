@@ -17,11 +17,8 @@ __copyright__ = """
 """
 __license__ = "Apache 2.0"
 
-from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User, Group
 from django.db import models
-# Plan represents the billing plans proposed by Threat-Buster
-from django.forms.models import ModelForm
 
 
 # Tenant represents the organization using the service
@@ -29,13 +26,18 @@ class Tenant(models.Model):
     name = models.CharField(max_length=1024)
     active = models.BooleanField(default=True)
     users = models.ManyToManyField(User)
+    group = models.ForeignKey(Group, blank=True, null=True)
 
     class Meta:
         verbose_name = "tenant"
         verbose_name_plural = "tenants"
 
-    def get_absolute_url(self):
-        return reverse('landing:site-details', args={self.pk})
+        permissions = (
+            ('view_tenant', 'View tenant'),
+        )
+
+    def __str__(self):
+        return self.name
 
 
 class Survey(models.Model):
@@ -92,10 +94,5 @@ class SurveyResult(models.Model):
     answer = models.BooleanField
     survey_results = models.ForeignKey(SurveyResults)
 
-
-class TenantForm(ModelForm):
-    class Meta:
-        model = Tenant
-        fields = ['name', 'active']
 
 
