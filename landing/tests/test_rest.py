@@ -1,6 +1,4 @@
 from django.contrib.auth.models import User
-from django.test import TestCase
-from guardian.core import ObjectPermissionChecker
 from rest_framework.parsers import JSONParser
 from rest_framework.test import APITestCase
 from six import BytesIO
@@ -25,23 +23,6 @@ __copyright__ = """
 
 """
 __license__ = "Apache 2.0"
-
-
-# Create your tests here.
-
-class CategoryTestCase(TestCase):
-    def setUp(self):
-        self.parent = ParentCategory.objects.create(category="First Category")
-        child1 = ChildCategory.objects.create(category="Child1", parent_category=self.parent)
-        child2 = ChildCategory.objects.create(category="Child2", parent_category=self.parent)
-
-    def test_counting(self):
-        parent = ParentCategory.objects.get(pk=self.parent.id)
-        self.assertEquals(2, parent.category_count())
-
-    def test_summary(self):
-        parent = ParentCategory.objects.get(pk=self.parent.id)
-        self.assertEquals("Child1, Child2", parent.category_list())
 
 
 class SurveyRestTestCase(APITestCase):
@@ -114,8 +95,6 @@ class TenantPermsTestCase(APITestCase):
         post_response = self.client.post("/api/tenants/", newTenant)
         self.assertEquals(post_response.status_code, 403)
 
-
-
     def loadTenant(self, user, id):
         self.client.force_authenticate(user=user)
         response = self.client.get("/api/tenants/{}/".format(id))
@@ -127,89 +106,6 @@ class TenantPermsTestCase(APITestCase):
         response = self.client.get('/api/tenants/')
         stream = BytesIO(response.content)
         return JSONParser().parse(stream)
-
-
-class DataLoadTestCase(TestCase):
-    fixtures = ['10_create_categories', '20_questions.json']
-
-    def testDataLoaded(self):
-        self.assertGreater(ParentCategory.objects.count(), 0)
-        self.assertGreater(Survey.objects.count(), 0)
-        self.assertGreater(Question.objects.count(), 0)
-
-
-class TenantGroupsTestCase(TestCase):
-    def setUp(self):
-        self.user1 = User.objects.create(username='user1')
-        self.user2 = User.objects.create(username='user2')
-
-    def testTenantCreation(self):
-        tenant = Tenant.objects.create(name='tenant')
-        tenant.save()
-        tenant_loaded = Tenant.objects.filter(pk=tenant.pk)
-        self.assertIsNotNone(tenant_loaded)
-        self.assertEquals(tenant.name, "tenant")
-        self.assertIsNotNone(tenant.group)
-        self.assertEquals(tenant.group.name, "TenantGroup{}".format(tenant.pk))
-        self.assertTrue(ObjectPermissionChecker(tenant.group).has_perm('view_tenant', tenant))
-        self.assertTrue(ObjectPermissionChecker(tenant.group).has_perm('change_tenant', tenant))
-
-    def testTenantAddingUserOnCreation(self):
-        tenant = Tenant.objects.create(name='tenantAddingUsers')
-        tenant.users.add(self.user1)
-        tenant.save()
-
-        tenant_loaded = Tenant.objects.filter(pk=tenant.pk)
-        self.assertIsNotNone(tenant_loaded)
-        self.assertEquals(tenant.name, "tenantAddingUsers")
-        self.assertIsNotNone(tenant.group)
-        self.assertIsNotNone(tenant.users)
-        self.assertTrue(self.user1.groups.filter(pk=tenant.group.pk).exists())
-        self.assertTrue(tenant.users.filter(pk=self.user1.pk).exists())
-        self.assertTrue(ObjectPermissionChecker(tenant.group).has_perm('view_tenant', tenant))
-
-    def testTenantAddingUserAfterCreation(self):
-        tenant = Tenant.objects.create(name='tenantAddingUsers')
-        tenant.save()
-        self.assertFalse(self.user1.has_perm('view_tenant', tenant))
-        tenant.users.add(self.user1)
-        tenant.save()
-        self.assertTrue(self.user1.has_perm('view_tenant', tenant))
-
-        tenant_loaded = Tenant.objects.filter(pk=tenant.pk)
-        self.assertIsNotNone(tenant_loaded)
-        self.assertEquals(tenant.name, "tenantAddingUsers")
-        self.assertIsNotNone(tenant.group)
-        self.assertIsNotNone(tenant.users)
-        self.assertTrue(self.user1.groups.filter(pk=tenant.group.pk).exists())
-        self.assertTrue(tenant.users.filter(pk=self.user1.pk).exists())
-        self.assertTrue(ObjectPermissionChecker(tenant.group).has_perm('view_tenant', tenant))
-
-    def testTenantRemovingUsers(self):
-        tenant = Tenant.objects.create(name='tenantRemovingUsers')
-        tenant.users.add(self.user1)
-        tenant.users.add(self.user2)
-        tenant.save()
-
-        tenant_loaded = Tenant.objects.filter(pk=tenant.pk)
-        self.assertIsNotNone(tenant_loaded)
-        self.assertEquals(tenant.name, "tenantRemovingUsers")
-        self.assertIsNotNone(tenant.group)
-        self.assertIsNotNone(tenant.users)
-        self.assertTrue(self.user1.groups.filter(pk=tenant.group.pk).exists())
-        self.assertTrue(tenant.users.filter(pk=self.user1.pk).exists())
-        self.assertTrue(tenant.users.filter(pk=self.user2.pk).exists())
-
-        tenant.users.remove(self.user2)
-        tenant.save()
-
-        self.assertTrue(self.user1.groups.filter(pk=tenant.group.pk).exists())
-        self.assertTrue(self.user1.has_perm('view_tenant', tenant))
-        self.assertFalse(self.user2.groups.filter(pk=tenant.group.pk).exists())
-        self.assertFalse(self.user2.has_perm('view_tenant', tenant))
-
-        self.assertTrue(tenant.users.filter(pk=self.user1.pk).exists())
-        self.assertFalse(tenant.users.filter(pk=self.user2.pk).exists())
 
 
 class QuestionRestTestCase(APITestCase):
