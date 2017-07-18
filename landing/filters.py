@@ -50,6 +50,11 @@ class TenantPermission(BasePermission):
 
 
 class UpdatableObjectPermission(DjangoObjectPermissions):
+    # This class 'fixes' behaviour on the default object which doesn't seem to work well with Django-Guardian. Namely
+    # the default class assumes users will have change permission on the model as well as the object permission. This is
+    # not true in Django Guardian by default. Returning True does not introduce security issue as security is enforced by
+    # the object level check later.
+
     def has_permission(self, request, view):
         # Read permissions are allowed to any request,
         # so we'll always allow GET, HEAD or OPTIONS requests.
