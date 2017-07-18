@@ -108,6 +108,14 @@ class TenantPermsTestCase(APITestCase):
         tenant_reload = Tenant.objects.get(id=self.tenant1.id)
         self.assertEquals(tenant_reload.name, "bob")
 
+    def testVerifyCreate(self):
+        newTenant = {"name": 'bobbins'}
+        self.client.force_login(self.user1)
+        post_response = self.client.post("/api/tenants/", newTenant)
+        self.assertEquals(post_response.status_code, 403)
+
+
+
     def loadTenant(self, user, id):
         self.client.force_authenticate(user=user)
         response = self.client.get("/api/tenants/{}/".format(id))

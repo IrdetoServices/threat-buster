@@ -1,6 +1,6 @@
 from rest_framework import viewsets, filters
 
-from landing.filters import TenantFilter, TenantPermission
+from landing.filters import TenantFilter, TenantPermission, UpdatableObjectPermission
 from landing.models import Survey, Tenant, SurveyResults
 from landing.serializers import SurveySerializer, TenantSerializer, SurveyResultsSerializer
 
@@ -75,6 +75,7 @@ class TenantViewSet(viewsets.ModelViewSet):
     serializer_class = TenantSerializer
 
     filter_backends = (filters.DjangoObjectPermissionsFilter,)
+    permission_classes = (UpdatableObjectPermission,)
 
 
 class SurveyResultsViewSet(viewsets.ModelViewSet):

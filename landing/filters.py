@@ -1,3 +1,5 @@
+from rest_framework import permissions
+
 __copyright__ = """
 
     Copyright 2017 Irdeto BV
@@ -18,7 +20,7 @@ __copyright__ = """
 __license__ = "Apache 2.0"
 
 from rest_framework.filters import BaseFilterBackend
-from rest_framework.permissions import BasePermission
+from rest_framework.permissions import BasePermission, DjangoObjectPermissions
 
 
 class TenantFilter(BaseFilterBackend):
@@ -45,3 +47,15 @@ class TenantPermission(BasePermission):
             return user.tenant_set.filter(pk=request.data['tenant']).exists()
         else:
             return True
+
+
+class UpdatableObjectPermission(DjangoObjectPermissions):
+    def has_permission(self, request, view):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        if request.method in ('PUT', 'PATCH'):
+            return True
+
+        return super(UpdatableObjectPermission, self).has_permission(request, view)
