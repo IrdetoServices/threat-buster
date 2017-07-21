@@ -79,6 +79,9 @@ class Question(models.Model):
     survey = models.ForeignKey(Survey)
     category = models.ForeignKey(ChildCategory)
 
+    def __str__(self):
+        return self.question
+
     class Meta:
         ordering = ['order']
 
@@ -88,10 +91,13 @@ class SurveyResults(models.Model):
     tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     survey = models.ForeignKey(Survey)
 
+    def __str__(self):
+        return "Results for {} on {}".format(self.tenant, self.date)
+
 
 class SurveyResult(models.Model):
     question = models.ForeignKey(Question)
-    answer = models.BooleanField
+    answer = models.BooleanField(blank=False)
     survey_results = models.ForeignKey(SurveyResults)
 
 

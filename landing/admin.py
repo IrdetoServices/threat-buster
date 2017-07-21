@@ -1,5 +1,7 @@
 from guardian.admin import GuardedModelAdmin
 
+from landing.models import SurveyResults, SurveyResult
+
 __copyright__ = """
 
     Copyright 2017 Irdeto BV
@@ -44,8 +46,14 @@ class QuestionsInLine(admin.TabularInline):
     fields = ['question', 'category', 'order']
     list_display = ['question', 'category', 'order']
 
+
 class ChildCategoryInLine(admin.TabularInline):
     model = ChildCategory
+
+
+class SurveyResultInLine(admin.TabularInline):
+    model = SurveyResult
+    fields = ['question', 'answer']
 
 
 @admin.register(ParentCategory)
@@ -60,6 +68,12 @@ class ParentAdmin(admin.ModelAdmin):
 class SurveyAdmin(admin.ModelAdmin):
     fields = ['title']
     inlines = [QuestionsInLine]
+
+
+@admin.register(SurveyResults)
+class SurveyResultsAdmin(admin.ModelAdmin):
+    fields = ['tenant', 'survey']
+    inlines = [SurveyResultInLine]
 
 
 admin.site.register(Tenant, TenantAdmin)

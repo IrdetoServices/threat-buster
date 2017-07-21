@@ -28,8 +28,9 @@ class TenantFilter(BaseFilterBackend):
         user = request.user
 
         if not user.is_superuser:
-            queryset.filter(tenant=user.tenant_set.all())
+            queryset = queryset.filter(tenant=user.tenant_set.all())
 
+        return queryset
 
 class TenantPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
@@ -44,7 +45,12 @@ class TenantPermission(BasePermission):
         user = request.user
 
         if not user.is_superuser:
-            return user.tenant_set.filter(pk=request.data['tenant']).exists()
+            if request.method in permissions.SAFE_METHODS:
+                return True
+            else:
+                # should have a tenant in the request body
+                assert (request.data['tenant'])
+                return user.tenant_set.filter(pk=request.data['tenant']).exists()
         else:
             return True
 

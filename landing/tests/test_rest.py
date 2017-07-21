@@ -108,7 +108,7 @@ class TenantPermsTestCase(APITestCase):
         return JSONParser().parse(stream)
 
 
-class QuestionRestTestCase(APITestCase):
+class SurveyResultTestCase(APITestCase):
     def setUp(self):
         self.tenant1 = Tenant.objects.create(name="Tenant Test Case 1")
         self.tenant2 = Tenant.objects.create(name="Tenant Test Case 2")
@@ -122,10 +122,10 @@ class QuestionRestTestCase(APITestCase):
         child1 = ChildCategory.objects.create(category="Child1", parent_category=self.parent)
         child2 = ChildCategory.objects.create(category="Child2", parent_category=self.parent)
         self.survey = Survey.objects.create(title="Test")
-        Question.objects.create(question="Question 1", category=child1, survey=self.survey)
-        Question.objects.create(question="Question 2", category=child2, survey=self.survey)
+        self.q1 = Question.objects.create(question="Question 1", category=child1, survey=self.survey)
+        self.q2 = Question.objects.create(question="Question 2", category=child2, survey=self.survey)
 
-    def testSurveyCompletion(self):
+    def testSurveyCompletionNoAnswers(self):
         self.client.force_login(self.user1)
         post = {"date": "2017-07-18",
                 "tenant": self.tenant1.id,
@@ -138,3 +138,33 @@ class QuestionRestTestCase(APITestCase):
         self.client.force_login(self.user2)
         response2 = self.client.post("/api/survey_results/", post)
         self.assertEquals(response2.status_code, 403)
+
+    def testSurveyCompletionWithAnswers(self):
+        self.client.force_login(self.user1)
+        post = {"date": "2017-07-18",
+                "tenant": self.tenant1.id,
+                "survey": self.survey.id,
+                "survey_results": [{
+                    "question": self.q1.pk,
+                    "answer": True},
+                    {
+                        "question": self.q2.pk,
+                        "answer": False
+                    }]}
+
+        response = self.client.post("/api/survey_results/", post, format='json')
+        self.assertEquals(response.status_code, 201)
+
+        survey_results = self.load_survey_results(self.user1)
+
+        self.assertTrue(survey_results[0]['survey_results'][0]['question'])
+
+        # Check other tenant can't see the results
+        survey_results = self.load_survey_results(self.user2)
+        self.assertEquals(len(survey_results), 0)
+
+    def load_survey_results(self, user):
+        self.client.force_login(user)
+        response = self.client.get("/api/survey_results/")
+        stream = BytesIO(response.content)
+        return JSONParser().parse(stream)
