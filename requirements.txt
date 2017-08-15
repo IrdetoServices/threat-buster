@@ -1,5 +1,4 @@
 app-version==0.2.1
-awsebcli==3.7.6
 blessed==1.9.5
 botocore==1.4.19
 cement==2.8.2
