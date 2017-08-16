@@ -97,17 +97,4 @@ run manage.py loaddata landing/fixtures/createplans.json to add the plans data t
 * django-crud-builder is used for editing endpoints
 * elastic beanstalk deployment
 
-# EB Deployment
 
-* On first Run  ``eb create --tags owner=YOUR_EMAIL``
-* Copy the portal\aws_local_settings_template.py and fill in your details - upload it to root of an S3 Bucket as local_settings.py
-* Ensure Elastic Beanstalk has access to the bucket
-    * This is does via the IAM Role for the EB cluster - it is recommended to create an role for each environment to avoid leaking configuration information
-* Run ``eb setenv CONFIG_BUCKET=YOUR_BUCKET_NAME``
-* Subsequently run ``eb deploy`
-* To run manage.py interactively
-```
-eb ssh
-source /opt/python/run/venv/bin/activate
-cd /opt/python/current/app
-```
