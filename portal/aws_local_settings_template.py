@@ -27,7 +27,7 @@ from aws_xray_sdk.core import xray_recorder
 # Template Settings file for AWS Deployment
 
 DEBUG = False
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = 'YOUR_SECRET_KEY'
 
 DATABASES = {
     'default': {
@@ -48,6 +48,20 @@ xray_recorder.configure(context_missing='LOG_ERROR')
 
 CLICKY_SITE_ID = '100957503'
 GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-78255329-1'
+
+AWS_HEADERS = {  # see http://developer.yahoo.com/performance/rules.html#expires
+        'Expires': 'Thu, 31 Dec 2099 20:00:00 GMT',
+        'Cache-Control': 'max-age=94608000',
+    }
+
+AWS_STORAGE_BUCKET_NAME = 'BUCKET_NAME'
+AWS_ACCESS_KEY_ID = 'xxxxxxxxxxxxxxxxxxxx'
+AWS_SECRET_ACCESS_KEY = 'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 
 LOGGING = {
     'version': 1,

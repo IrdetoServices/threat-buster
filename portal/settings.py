@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'django_tables2',
     'djangobower',
+    'storages',
     'django_nvd3',
     'analytical',
     'rest_framework',

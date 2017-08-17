@@ -1,7 +1,9 @@
 app-version==0.2.1
 aws-xray-sdk==0.91.1
 blessed==1.9.5
-botocore==1.4.19
+boto==2.48.0
+boto3==1.4.6
+botocore==1.6.3
 cement==2.8.2
 certifi==2017.7.27.1
 chardet==3.0.4
@@ -17,6 +19,7 @@ django-bower==5.2.0
 django-filter==1.0.4
 django-guardian==1.4.9
 django-nvd3==0.9.7
+django-storages==1.6.5
 django-tables2==1.2.1
 djangorestframework==3.6.3
 docker-py==1.7.2
@@ -43,6 +46,7 @@ pytz==2017.2
 PyYAML==3.11
 requests==2.9.1
 requests-oauthlib==0.6.1
+s3transfer==0.1.10
 semantic-version==2.5.0
 six==1.10.0
 tabulate==0.7.7
