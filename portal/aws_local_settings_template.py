@@ -18,6 +18,11 @@ __copyright__ = """
 __license__ = "Apache 2.0"
 
 import requests
+import botocore
+import sqlite3
+from aws_xray_sdk.core import xray_recorder
+from aws_xray_sdk.core import patch
+from aws_xray_sdk.core import xray_recorder
 
 # Template Settings file for AWS Deployment
 
@@ -36,6 +41,10 @@ DATABASES = {
 }
 
 MIDDLEWARE.insert(0, 'aws_xray_sdk.ext.django.middleware.XRayMiddleware')
+xray_recorder.configure(service='Threat-Buster')
+plugins = ('ElasticBeanstalkPlugin', 'EC2Plugin')
+xray_recorder.configure(plugins=plugins)
+xray_recorder.configure(context_missing='LOG_ERROR')
 
 CLICKY_SITE_ID = '100957503'
 GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-78255329-1'
@@ -63,12 +72,11 @@ LOGGING = {
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ['127.0.0.1']
 
-
 # Add AWS local IP to allowed hosts to enable ELB status checks
 
-EC2_PRIVATE_IP  =   None
+EC2_PRIVATE_IP = None
 try:
-    EC2_PRIVATE_IP  =   requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout = 0.01).text
+    EC2_PRIVATE_IP = requests.get('http://169.254.169.254/latest/meta-data/local-ipv4', timeout=0.01).text
 except requests.exceptions.RequestException:
     pass
 
