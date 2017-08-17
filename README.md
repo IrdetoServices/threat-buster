@@ -97,14 +97,4 @@ run manage.py loaddata landing/fixtures/createplans.json to add the plans data t
 * django-crud-builder is used for editing endpoints
 * elastic beanstalk deployment
 
-# EB Deployment
 
-* On first Run  ``eb create --tags owner=YOUR_EMAIL``
-* Subsequently run ``eb deploy`
-* Super user is created if you set in AWS console SUPER_USER_NAME, SUPER_USER_EMAIL, SUPER_USER_PASSWORD environment variables
-* To run manage.py interactively
-```
-eb ssh
-source /opt/python/run/venv/bin/activate
-cd /opt/python/current/app
-```

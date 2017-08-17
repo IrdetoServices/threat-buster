@@ -252,10 +252,10 @@ LOGGING = {
 f = os.path.join(PROJECT_APP_PATH, "local_settings.py")
 if os.path.exists(f):
     import sys
-    import importlib
+    import types
 
     module_name = "%s.local_settings" % PROJECT_APP
-    module = importlib.new_module(module_name)
-    module.__file__ = f
-    sys.modules[module_name] = module
+    settings_module = types.ModuleType(module_name)
+    settings_module.__file__ = f
+    sys.modules[module_name] = settings_module
     exec(open(f, "rb").read())
