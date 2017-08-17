@@ -35,7 +35,7 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS.insert(0, 'aws_xray_sdk.ext.django.middleware.XRayMiddleware')
+MIDDLEWARE.insert(0, 'aws_xray_sdk.ext.django.middleware.XRayMiddleware')
 
 CLICKY_SITE_ID = '100957503'
 GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-78255329-1'
