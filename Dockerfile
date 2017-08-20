@@ -6,7 +6,7 @@ WORKDIR    /var/app
 RUN        pip3 install virtualenv
 RUN        virtualenv /var/app
 RUN        /var/app/bin/pip install uwsgi
-
+RUN        pip3 install awscli
 RUN        useradd uwsgi -s /bin/false
 RUN        mkdir /var/log/uwsgi
 RUN        chown -R uwsgi:uwsgi /var/log/uwsgi
