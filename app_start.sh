@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [$CONFIG_BUCKET]; then
+if [ -n "$CONFIG_BUCKET" ]; then
 
     cd /var/app
 
