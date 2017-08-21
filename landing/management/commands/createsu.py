@@ -30,7 +30,8 @@ class Command(BaseCommand):
             email_ = os.environ['SUPER_USER_EMAIL']
             password_ = os.environ['SUPER_USER_PASSWORD']
         except KeyError:
-            raise CommandError('SUPER_USER_[USERNAME|EMAIL|PASSWORD is not set. \n %s' % os.environ)
+            self.stdout.write(self.style.WARNING('SUPER_USER_[USERNAME|EMAIL|PASSWORD is not set. \n %s' % os.environ))
+            return
 
         if not User.objects.filter(username=username).exists():
             User.objects.create_superuser(username,
