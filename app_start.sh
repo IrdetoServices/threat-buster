@@ -3,6 +3,7 @@
 if [ -n "$CONFIG_BUCKET" ]; then
 
     cd /var/app
+    . bin/activate
 
     # Must check s3 region as in some regions calling without --region fails
     REGION=`aws s3api get-bucket-location --bucket $CONFIG_BUCKET --output text`
