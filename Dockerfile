@@ -11,7 +11,7 @@ RUN        useradd uwsgi -s /bin/false
 RUN        mkdir /var/log/uwsgi
 RUN        chown -R uwsgi:uwsgi /var/log/uwsgi
 RUN        apt-get update && apt-get install -y npm node
-RUN        npm -g bower
+RUN        npm install -g bower
 
 
 ADD        . /var/app
