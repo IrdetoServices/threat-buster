@@ -10,6 +10,9 @@ RUN        pip3 install awscli
 RUN        useradd uwsgi -s /bin/false
 RUN        mkdir /var/log/uwsgi
 RUN        chown -R uwsgi:uwsgi /var/log/uwsgi
+RUN        apt-get update && apt-get install -y npm node
+RUN        npm -g bower
+
 
 ADD        . /var/app
 RUN        if [ -f /var/app/requirements.txt ]; then /var/app/bin/pip install -r /var/app/requirements.txt; fi
