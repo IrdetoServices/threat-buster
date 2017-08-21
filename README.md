@@ -96,5 +96,3 @@ run manage.py loaddata landing/fixtures/createplans.json to add the plans data t
 * django-tables-2 is used to render tables in user app
 * django-crud-builder is used for editing endpoints
 * elastic beanstalk deployment
-
-
