@@ -158,6 +158,9 @@ Resources:
           OptionName:              CONFIG_BUCKET
           Value:                   !Ref ConfigS3Bucket
         - Namespace:               'aws:elasticbeanstalk:application:environment'
+          OptionName:              STATIC_BUCKET
+          Value:                   !Ref StaticS3Bucket
+        - Namespace:               'aws:elasticbeanstalk:application:environment'
           OptionName:              RDS_PORT
           Value:                   !GetAtt
             - "ThreatBusterDb"
@@ -252,7 +255,7 @@ Outputs:
     Description:                   URL of the AWS Elastic Beanstalk Environment
     Value:                         !Join
       - ''
-      - - 'http://'
+      - - 'https://'
         - !GetAtt
           - "ThreatBusterEnvironment"
           - EndpointURL
