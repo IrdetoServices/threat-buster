@@ -18,6 +18,12 @@ Parameters:
     MaxLength:                     '41'
     AllowedPattern:                '[a-zA-Z0-9]*'
     ConstraintDescription:         must contain only alphanumeric characters.
+  BaseName:
+    Type: String
+    Description: Base name for buckets
+    MinLength: '1'
+    AllowedPattern: '[a-zA-Z0-9-]*'
+    ConstraintDescription: 'Only lowercase characters'
 Mappings:
   Region2Principal:
     us-east-1:
@@ -115,27 +121,27 @@ Resources:
       Path:                        /
       Roles:
         - !Ref WebServerRole
-  SampleApplication:
+  ThreatBusterApplication:
     Type:                          'AWS::ElasticBeanstalk::Application'
     Properties:
-      Description:                 Threat-Buster
-  SampleApplicationVersion:
+      Description:                 !Ref BaseName
+  ThreatBusterApplicationVersion:
     Type:                          'AWS::ElasticBeanstalk::ApplicationVersion'
     Properties:
       Description:                 Version 1.0
-      ApplicationName:             !Ref SampleApplication
+      ApplicationName:             !Ref ThreatBusterApplication
       SourceBundle:
         S3Bucket:                  !Join
           - '-'
           - - elasticbeanstalk-samples
             - !Ref 'AWS::Region'
         S3Key:                     docker-sample-v3.zip
-  SampleConfigurationTemplate:
+  ThreatBusterConfigurationTemplate:
     Type:                          'AWS::ElasticBeanstalk::ConfigurationTemplate'
     Properties:
-      ApplicationName:             !Ref SampleApplication
-      Description:                 Threat-Buster Configuration 1.0
-      SolutionStackName:           64bit Amazon Linux 2017.03 v2.7.2 running Docker 17.03.1-ce
+      ApplicationName:             !Ref ThreatBusterApplication
+      Description:                 !Join [ "", [!Ref BaseName, "Configuration 1.0"]]
+      SolutionStackName:           64bit Amazon Linux 2017.03 v2.7.3 running Docker 17.03.1-ce
       OptionSettings:
         - Namespace:               'aws:elasticbeanstalk:application:environment'
           OptionName:              RDS_USER_NAME
@@ -146,12 +152,15 @@ Resources:
         - Namespace:               'aws:elasticbeanstalk:application:environment'
           OptionName:              RDS_HOST
           Value:                   !GetAtt
-            - SampleDB
+            - "ThreatBusterDb"
             - Endpoint.Address
+        - Namespace:               'aws:elasticbeanstalk:application:environment'
+          OptionName:              CONFIG_BUCKET
+          Value:                   !Ref ConfigS3Bucket
         - Namespace:               'aws:elasticbeanstalk:application:environment'
           OptionName:              RDS_PORT
           Value:                   !GetAtt
-            - SampleDB
+            - "ThreatBusterDb"
             - Endpoint.Port
         - Namespace:               'aws:autoscaling:launchconfiguration'
           OptionName:              SecurityGroups
@@ -162,13 +171,13 @@ Resources:
         - Namespace:               'aws:elasticbeanstalk:environment'
           OptionName:              ServiceRole
           Value:                   !Ref EBServiceRole
-  SampleEnvironment:
+  ThreatBusterEnvironment:
     Type:                          'AWS::ElasticBeanstalk::Environment'
     Properties:
       Description:                 AWS Elastic Beanstalk Environment running Sample Application
-      ApplicationName:             !Ref SampleApplication
-      TemplateName:                !Ref SampleConfigurationTemplate
-      VersionLabel:                !Ref SampleApplicationVersion
+      ApplicationName:             !Ref ThreatBusterApplication
+      TemplateName:                !Ref ThreatBusterConfigurationTemplate
+      VersionLabel:                !Ref ThreatBusterApplicationVersion
   InstanceSecurityGroup:
     Type:                          'AWS::EC2::SecurityGroup'
     Properties:
@@ -177,13 +186,13 @@ Resources:
   DBEC2SecurityGroup:
     Type:                          'AWS::EC2::SecurityGroup'
     Properties:
-      GroupDescription:            Open database for access
+      GroupDescription:            Open database for access from EB
       SecurityGroupIngress:
         - IpProtocol:              tcp
           FromPort:                '5432'
           ToPort:                  '5432'
           SourceSecurityGroupName: !Ref InstanceSecurityGroup
-  SampleDB:
+  ThreatBusterDb:
     Type:                          'AWS::RDS::DBInstance'
     Properties:
       Engine:                      Postgres
@@ -197,6 +206,47 @@ Resources:
         - !GetAtt
             - DBEC2SecurityGroup
             - GroupId
+  ConfigS3Bucket:
+        Type: "AWS::S3::Bucket"
+        Properties:
+          AccessControl: Private
+  ConfigS3BucketPolicy:
+      Type: "AWS::IAM::Policy"
+      Properties:
+        Roles:
+          - !Ref EBServiceRole
+        PolicyName: !Join ["", ["policy-config-read", !Ref ConfigS3Bucket ]]
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: Allow
+              Action:
+                  - "s3:*"
+              Resource:
+                  - !GetAtt ConfigS3Bucket.Arn
+                  - !Join ["", [ !GetAtt ConfigS3Bucket.Arn, "/*"]]
+  StaticS3Bucket:
+      Type: "AWS::S3::Bucket"
+      Properties:
+        AccessControl: PublicRead
+  StaticS3BucketPolicy:
+      Type: "AWS::IAM::Policy"
+      Properties:
+        Roles:
+          - !Ref EBServiceRole
+        PolicyName: !Join ["", ["policy-static-all", !Ref StaticS3Bucket ]]
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            -
+              Effect: Allow
+              Action:
+                  - "s3:*"
+              Resource:
+                - !GetAtt StaticS3Bucket.Arn
+                - !Join ["", [ !GetAtt StaticS3Bucket.Arn, "/*"]]
+
 Outputs:
   URL:
     Description:                   URL of the AWS Elastic Beanstalk Environment
@@ -204,10 +254,16 @@ Outputs:
       - ''
       - - 'http://'
         - !GetAtt
-          - SampleEnvironment
+          - "ThreatBusterEnvironment"
           - EndpointURL
   RDSEndpoint:
     Description:                   RDS Endpoint
     Value:                         !GetAtt
-      - SampleDB
+      - "ThreatBusterDb"
       - Endpoint.Address
+  ConfigBucket:
+    Description: Config Bucket
+    Value: !Ref ConfigS3Bucket
+  StaticBucket:
+    Description: Static Bucket
+    Value: !Ref StaticS3Bucket
