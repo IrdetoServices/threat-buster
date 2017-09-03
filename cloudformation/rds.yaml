@@ -144,7 +144,7 @@ Resources:
       SolutionStackName:           64bit Amazon Linux 2017.03 v2.7.3 running Docker 17.03.1-ce
       OptionSettings:
         - Namespace:               'aws:elasticbeanstalk:application:environment'
-          OptionName:              RDS_USER_NAME
+          OptionName:              RDS_USERNAME
           Value:                   !Ref DBUser
         - Namespace:               'aws:elasticbeanstalk:application:environment'
           OptionName:              RDS_PASSWORD
