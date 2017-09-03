@@ -174,6 +174,12 @@ Resources:
         - Namespace:               'aws:elasticbeanstalk:environment'
           OptionName:              ServiceRole
           Value:                   !Ref EBServiceRole
+        - Namespace:               'aws:elasticbeanstalk:cloudwatch:logs'
+          OptionName: StreamLogs
+          Value: true
+        - Namespace: 'aws:elasticbeanstalk:cloudwatch:logs'
+          OptionName: RetentionInDays
+          Value: 7
   ThreatBusterEnvironment:
     Type:                          'AWS::ElasticBeanstalk::Environment'
     Properties:
@@ -199,7 +205,7 @@ Resources:
     Type:                          'AWS::RDS::DBInstance'
     Properties:
       Engine:                      Postgres
-      DBName:                      beanstalkdb
+      DBName:                      !Ref DBUser
       EngineVersion:               9.5.4
       MasterUsername:              !Ref DBUser
       DBInstanceClass:             db.t2.small
