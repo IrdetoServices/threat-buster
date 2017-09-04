@@ -16,5 +16,3 @@ components/*
 !.elasticbeanstalk/*.global.yml
 
 portal/local_settings.py
-
-deploy.sh
