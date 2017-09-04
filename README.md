@@ -84,9 +84,6 @@ python manage.py  collectstatic
 
 ```
 
-#Populating the DB
-run manage.py loaddata landing/fixtures/createplans.json to add the plans data to the database
-
 # What's here
 
 * django app
