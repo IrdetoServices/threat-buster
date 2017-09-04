@@ -150,7 +150,7 @@ Resources:
           OptionName:              RDS_PASSWORD
           Value:                   !Ref DBPassword
         - Namespace:               'aws:elasticbeanstalk:application:environment'
-          OptionName:              RDS_HOST
+          OptionName:              RDS_HOSTNAME
           Value:                   !GetAtt
             - "ThreatBusterDb"
             - Endpoint.Address
