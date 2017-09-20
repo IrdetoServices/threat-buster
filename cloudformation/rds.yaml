@@ -32,6 +32,9 @@ Parameters:
     Type: String
     Description: DNS Zone for env - must be in Route 53
     Default: threat-buster.com
+  CertificateARN:
+    Type: String
+    Description: "The ARN of the certificate to use on the load balancer."
 Mappings:
   Region2Principal:
     us-east-1:
@@ -134,10 +137,11 @@ Resources:
     Properties:
       HostedZoneName: !Join [ "", [ !Ref DNSZone, "." ]]
       Comment: "CName to elastic beanstalk"
-      Name: !Join ["", [ !Ref DNSName, ".", !Ref 'AWS::Region', ".", !Ref DNSZone ]]
+      Name: !Join ["", [ !Ref DNSName, ".", !Ref DNSZone ]]
       Type: CNAME
       TTL: 900
-      ResourceRecords: !GetAtt ThreatBusterEnvironment.EndpointURL
+      ResourceRecords:
+        - !GetAtt ThreatBusterEnvironment.EndpointURL
   ThreatBusterApplication:
     Type:                          'AWS::ElasticBeanstalk::Application'
     Properties:
@@ -197,6 +201,54 @@ Resources:
         - Namespace: 'aws:elasticbeanstalk:cloudwatch:logs'
           OptionName: RetentionInDays
           Value: 7
+        - Namespace: 'aws:elasticbeanstalk:cloudwatch:logs'
+          OptionName: DeleteOnTerminate
+          Value: true
+        - Namespace: 'aws:elasticbeanstalk:environment:process:default'
+          OptionName: StickinessEnabled
+          Value: true
+        - Namespace: 'aws:elasticbeanstalk:managedactions'
+          OptionName: ManagedActionsEnabled
+          Value: true
+        - Namespace: 'aws:elasticbeanstalk:managedactions'
+          OptionName: PreferredStartTime
+          Value: Tue:10:00
+        - Namespace: 'aws:elasticbeanstalk:managedactions:platformupdate'
+          OptionName: UpdateLevel
+          Value: patch
+        - Namespace: 'aws:elasticbeanstalk:healthreporting:system'
+          OptionName: SystemType
+          Value: enhanced
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: LoadBalanced
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: LoadBalancerType
+          Value: classic
+        - Namespace: aws:elb:listener
+          OptionName: ListenerEnabled
+          Value: false
+        - Namespace: aws:elb:listener:443
+          OptionName: InstancePort
+          Value: 80
+        - Namespace: aws:elb:listener:443
+          OptionName: ListenerProtocol
+          Value: HTTPS
+        - Namespace: aws:elb:listener:443
+          OptionName: InstanceProtocol
+          Value: HTTP
+        - Namespace: aws:elb:listener:443
+          OptionName: PolicyNames
+          Value: TLSHighPolicy
+        - Namespace: aws:elb:policies
+          OptionName: LoadBalancerPorts
+          Value: :all
+        - Namespace:  aws:elb:policies:TLSHighPolicy
+          OptionName: SSLReferencePolicy
+          Value:      ELBSecurityPolicy-TLS-1-2-2017-01
+        - Namespace: aws:elb:listener:443
+          OptionName: SSLCertificateId
+          Value:  !Sub "${CertificateARN}"
   ThreatBusterEnvironment:
     Type:                          'AWS::ElasticBeanstalk::Environment'
     Properties:
