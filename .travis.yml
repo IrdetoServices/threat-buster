@@ -17,4 +17,4 @@ deploy:
   bucket_name: elasticbeanstalk-eu-west-2-187415578575
   on:
     repo: IrdetoServices/threat-buster
-    branch: production
+    branch: master
