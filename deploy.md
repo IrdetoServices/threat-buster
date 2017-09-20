@@ -11,7 +11,7 @@ This project is setup up to deploy to AWS via a combination of CloudFormation an
 
 ## Creation
 
-* Run ``` deploy.sh ```
+* Run ``` deploy.sh -n UNIQUE_ENV_ID -c ARN_TO_TLS_CERT ```
     * Optionally edit the params if you want to rename things
 * Wait for it to complete the cloud formation (take 10-15 mins)
 * Connect project to the EB
