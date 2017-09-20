@@ -24,6 +24,14 @@ Parameters:
     MinLength: '1'
     AllowedPattern: '[a-zA-Z0-9-]*'
     ConstraintDescription: 'Only lowercase characters'
+  DNSName:
+    Type: String
+    Description: DNS Name - will be added to DNS Zone
+    Default: www
+  DNSZone:
+    Type: String
+    Description: DNS Zone for env - must be in Route 53
+    Default: threat-buster.com
 Mappings:
   Region2Principal:
     us-east-1:
@@ -121,6 +129,15 @@ Resources:
       Path:                        /
       Roles:
         - !Ref WebServerRole
+  ThreatBusterCName:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      HostedZoneName: !Join [ "", [ !Ref DNSZone, "." ]]
+      Comment: "CName to elastic beanstalk"
+      Name: !Join ["", [ !Ref DNSName, ".", !Ref 'AWS::Region', ".", !Ref DNSZone ]]
+      Type: CNAME
+      TTL: 900
+      ResourceRecords: !GetAtt ThreatBusterEnvironment.EndpointURL
   ThreatBusterApplication:
     Type:                          'AWS::ElasticBeanstalk::Application'
     Properties:
