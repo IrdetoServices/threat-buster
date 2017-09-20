@@ -14,4 +14,4 @@ do	case "$o" in
 	esac
 done
 
-aws cloudformation create-stack --stack-name threat-buster$NAME --template-body file://cloudformation/rds.yaml --parameters ParameterKey=DBUser,ParameterValue=$DB_USER ParameterKey=DBPassword,ParameterValue=$DB_PASSWORD ParameterKey=BaseName,ParameterValue=threatbuster ParameterKey=DNSName,ParameterValue=dev$NAME ParameterKey=CertificateARN,ParameterValue=$CERT --region eu-west-2 --capabilities CAPABILITY_IAM
+aws cloudformation create-stack --stack-name threat-buster$NAME --template-body file://cloudformation/rds.yaml --parameters ParameterKey=DBUser,ParameterValue=$DB_USER ParameterKey=DBPassword,ParameterValue=$DB_PASSWORD ParameterKey=BaseName,ParameterValue=threatbuster ParameterKey=DNSName,ParameterValue=$NAME ParameterKey=CertificateARN,ParameterValue=$CERT --region eu-west-2 --capabilities CAPABILITY_IAM
