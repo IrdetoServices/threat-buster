@@ -1,3 +1,5 @@
+from neomodel import config
+
 __copyright__ = """
 
     Copyright 2017 Irdeto BV
@@ -259,3 +261,6 @@ if os.path.exists(f):
     settings_module.__file__ = f
     sys.modules[module_name] = settings_module
     exec(open(f, "rb").read())
+
+# Neo4j Configuration
+config.DATABASE_URL = 'bolt://neo4j:threat-buster@localhost:7687'
