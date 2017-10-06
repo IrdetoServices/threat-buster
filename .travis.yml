@@ -20,4 +20,4 @@ deploy:
       branch: master
 before_install:
 - docker pull neo4j:enterprise
-- docker run --publish=7474:7474 --publish=7687:7687 --env NEO4J_AUTH=neo4j/threat-buster"
+- docker run --publish=7474:7474 --publish=7687:7687 --env NEO4J_AUTH=neo4j/threat-buster neo4j:enterprise
