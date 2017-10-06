@@ -27,6 +27,7 @@ router = routers.DefaultRouter()
 router.register(r'tenants', TenantViewSet)
 router.register(r'surveys', SurveyViewSet)
 router.register(r'survey_results', SurveyResultsViewSet)
+router.register(r'attack_goals', AttackGoalViewSet, base_name='attack_goals')
 
 app_name = 'landing'
 

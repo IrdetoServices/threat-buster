@@ -27,7 +27,7 @@ __license__ = "Apache 2.0"
 
 # Setup for Mac
 
-* Install Pycharm - https://www.jetbrains.com/pycharm/
+* Install Pycharm/Intellij - https://www.jetbrains.com/pycharm/
 * Install Brew - http://brew.sh/
 * Run
 ```
@@ -67,6 +67,7 @@ In tools -> Run Manage.Py task
 * migrate
 * runserver
 * createsuperuser
+* loadsample
 
 ## In Pycharm with menus
 
@@ -81,6 +82,7 @@ python manage.py migrate
 python manage.py runserver
 python manage.py  bower install
 python manage.py  collectstatic
+python manage.py  loadsample
 
 ```
 
@@ -89,7 +91,6 @@ python manage.py  collectstatic
 * django app
 * All Auth enabled configured for local logins
 * CSS from http://startbootstrap.com/
-* Simple model for tenants/endpoints
-* django-tables-2 is used to render tables in user app
-* django-crud-builder is used for editing endpoints
+* neomodel based OGM for neo4j
+* django-rest based REST API
 * elastic beanstalk deployment

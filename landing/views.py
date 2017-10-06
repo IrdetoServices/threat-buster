@@ -1,8 +1,11 @@
 from rest_framework import viewsets, filters
+from rest_framework.mixins import ListModelMixin
+from rest_framework.response import Response
 
-from landing.filters import TenantFilter, TenantPermission, UpdatableObjectPermission
+from landing.filters import TenantFilter, TenantPermission, UpdatableObjectPermission, AttackGoalFilter
+from landing.graph_models import AttackGoal
 from landing.models import Survey, Tenant, SurveyResults
-from landing.serializers import SurveySerializer, TenantSerializer, SurveyResultsSerializer
+from landing.serializers import SurveySerializer, TenantSerializer, SurveyResultsSerializer, AttackGoalSerializer
 
 __copyright__ = """
 
@@ -24,7 +27,7 @@ __copyright__ = """
 __license__ = "Apache 2.0"
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import TemplateView
 
 
@@ -84,3 +87,18 @@ class SurveyResultsViewSet(viewsets.ModelViewSet):
 
     filter_backends = (TenantFilter,)
     permission_classes = (TenantPermission,)
+
+
+class AttackGoalViewSet(viewsets.GenericViewSet, ListModelMixin):
+
+    serializer_class = AttackGoalSerializer
+    filter_backends = (AttackGoalFilter,)
+
+    def get_queryset(self):
+        return AttackGoal.nodes
+
+    def retrieve(self, request, pk=None):
+        node = AttackGoal.nodes.get(pk)
+        serializer = AttackGoalSerializer(node)
+        return Response(serializer.data)
+
