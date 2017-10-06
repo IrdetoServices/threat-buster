@@ -1,5 +1,7 @@
 import os
 
+from neomodel import config
+
 __copyright__ = """
 
     Copyright 2017 Irdeto BV
@@ -98,3 +100,6 @@ except requests.exceptions.RequestException:
 
 if EC2_PRIVATE_IP:
     ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
+
+# Neo4j Configuration
+config.DATABASE_URL = 'bolt://neo4j:threat-buster@localhost:7687'

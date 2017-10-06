@@ -2,7 +2,7 @@ db.sqlite3
 *.ids
 .idea
 *.py[cod]
-
+*.iml
 
 .DS_Store
 
