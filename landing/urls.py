@@ -28,6 +28,7 @@ router.register(r'tenants', TenantViewSet)
 router.register(r'surveys', SurveyViewSet)
 router.register(r'survey_results', SurveyResultsViewSet)
 router.register(r'attack_goals', AttackGoalViewSet, base_name='attack_goals')
+router.register(r'attack_graphson', AttackTreeGraphson, base_name='attack_graphson')
 
 app_name = 'landing'
 
@@ -35,4 +36,5 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r"^accounts/profile/$", views.profile, name='profile'),
     url(r"^accounts/profile/dashboard/$", Dashboard.as_view(), name='dashboard'),
+    url(r"^accounts/profile/attack_goals/$", AttackGoals.as_view(), name='attack_goals'),
     url(r'^api/', include(router.urls))]

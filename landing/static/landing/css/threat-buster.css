@@ -1,0 +1,33 @@
+.node {
+    stroke: #222;
+    stroke-width: 1.5px;
+}
+
+.node_BasicEvent {
+    fill: #880014;
+}
+
+.node_AttackMethod {
+    fill: #888;
+}
+
+.node_Attacker {
+    fill: #490088;
+}
+
+.node_AttackGoal {
+    fill: #058802
+}
+
+.node_Mitigation {
+    fill: #BBB;
+}
+
+.edge {
+    stroke: #999;
+    stroke-opacity: .6;
+    stroke-width: 1px;
+}
+div#graph {
+    height: 500px;
+}

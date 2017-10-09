@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+
+{% block extra_head %}
+
+    <script type="text/javascript" src="{% static 'd3/d3.js' %}"></script>
+    <link href="{% static 'landing/css/threat-buster.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li><a href="{% url 'landing:profile' %}">Profiles</a></li>
+        <li class="active"><a href="#">Attack Goals</a></li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <h1>Attack Goals - D3 Direct</h1>
+
+    <div id="graph"/>
+
+    <script>
+        var width = 500, height = 200;
+        // force layout setup
+        var force = d3.layout.force()
+            .charge(-200).linkDistance(120).size([width, height]);
+
+        // setup svg div
+        var svg = d3.select("#graph").append("svg")
+            .attr("width", "100%").attr("height", "100%")
+            .attr("pointer-events", "all");
+
+        // load graph (nodes,links) json from /graph endpoint
+        d3.json("/api/attack_graphson/", function (error, graph) {
+            if (error) return;
+
+            force.nodes(graph.nodes).links(graph.edges).start();
+
+            // render relationships as lines
+            var link = svg.selectAll(".edge")
+                .data(graph.edges).enter()
+                .append("g").attr("class", "edge_group")
+                .append("line").attr("class", "edge");
+
+            // render nodes as circles, css-class from label
+            var node = svg.selectAll(".node")
+                .data(graph.nodes).enter()
+                .append("g").attr("class", "node_group")
+                .append("circle")
+                .attr("class", function (d) {
+                    return "node_" + d.type
+                })
+                .attr("r", 10)
+                .call(force.drag);
+
+            // html title attribute for title node-attribute
+            node.append("title")
+                .text(function (d) {
+                    return d.caption;
+                })
+
+            var linkText = svg.selectAll(".edge_group")
+                .append("text")
+                .attr("class", "link-label")
+                .attr("fill", "Black")
+                .attr("dy", ".35em")
+                .attr("text-anchor", "middle")
+                .text(function (d) {
+                    return d.caption;
+                });
+
+            var nodeText = svg.selectAll(".node_group")
+                .append("text")
+                .attr("class", "link-label")
+                .attr("fill", "Black")
+                .attr("dy", ".35em")
+                .attr("text-anchor", "middle")
+                .text(function (d) {
+                    return d.caption;
+                });
+
+            // force feed algo ticks for coordinate computation
+            force.on("tick", function () {
+                link.attr("x1", function (d) {
+                    return d.source.x;
+                })
+                    .attr("y1", function (d) {
+                        return d.source.y;
+                    })
+                    .attr("x2", function (d) {
+                        return d.target.x;
+                    })
+                    .attr("y2", function (d) {
+                        return d.target.y;
+                    });
+
+                node.attr("cx", function (d) {
+                    return d.x;
+                })
+                    .attr("cy", function (d) {
+                        return d.y;
+                    });
+
+                linkText
+                    .attr("x", function (d) {
+                        return ((d.source.x + d.target.x) / 2);
+                    })
+                    .attr("y", function (d) {
+                        return ((d.source.y + d.target.y) / 2);
+                    });
+
+                nodeText
+                    .attr("x", function (d) {
+                        return d.x;
+                    })
+                    .attr("y", function (d) {
+                        return d.y;
+                    });
+            });
+        });
+    </script>
+
+
+{% endblock %}

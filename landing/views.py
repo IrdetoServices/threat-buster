@@ -1,3 +1,7 @@
+import json
+
+from django.utils.decorators import method_decorator
+from neomodel import db
 from rest_framework import viewsets, filters
 from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
@@ -44,6 +48,7 @@ def profile(request):
     return render(request, 'landing/profile.html')
 
 
+@method_decorator(login_required, name='dispatch')
 class Dashboard(TemplateView):
     template_name = "landing/profile_dashboard.html"
 
@@ -68,6 +73,11 @@ class Dashboard(TemplateView):
         return data
 
 
+@method_decorator(login_required, name='dispatch')
+class AttackGoals(TemplateView):
+    template_name = "landing/attack_goals.html"
+
+
 class SurveyViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
@@ -90,7 +100,6 @@ class SurveyResultsViewSet(viewsets.ModelViewSet):
 
 
 class AttackGoalViewSet(viewsets.GenericViewSet, ListModelMixin):
-
     serializer_class = AttackGoalSerializer
     filter_backends = (AttackGoalFilter,)
 
@@ -102,3 +111,37 @@ class AttackGoalViewSet(viewsets.GenericViewSet, ListModelMixin):
         serializer = AttackGoalSerializer(node)
         return Response(serializer.data)
 
+
+class AttackTreeGraphson(viewsets.ViewSet):
+    def list(self, request):
+        relations, nodesMeta = db.cypher_query("MATCH (a:AttackGoal)-[b*]->(c) return a,b,c", None)
+
+        outputNodes = []
+        outputEdges = []
+
+        outputNodes.append({
+            "id": len(outputNodes),
+            "uid": relations[0][0].properties['uid'],
+            "caption": relations[0][0].properties['title'],
+            "type": list(relations[0][0].labels)[0],
+            "root": True
+        })
+
+        ids = { relations[0][0].properties['uid']: len(outputNodes) - 1 }
+
+        for relation in relations:
+            outputNodes.append({
+                "id": len(outputNodes),
+                "uid": relation[2].properties['uid'],
+                "caption": relation[2].properties['title'],
+                "type": list(relation[2].labels)[0]
+            })
+            ids[relation[2].properties['uid']] = len(outputNodes) - 1
+
+            outputEdges.append({
+                "source": ids[relation[0].properties['uid']],
+                "target": ids[relation[2].properties['uid']],
+                "caption": relation[1][0].type
+            })
+
+        return Response({'nodes': outputNodes, 'edges': outputEdges})
