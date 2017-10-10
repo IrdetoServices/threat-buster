@@ -1,9 +1,12 @@
+from uuid import uuid4
+
 from django.contrib.auth.models import User
 from rest_framework.parsers import JSONParser
 from rest_framework.test import APITestCase
 from six import BytesIO
 
 from landing.models import ParentCategory, ChildCategory, Survey, Question, Tenant
+from landing.tests.test_graph import GraphTestMixin
 
 __copyright__ = """
 
@@ -168,3 +171,68 @@ class SurveyResultTestCase(APITestCase):
         response = self.client.get("/api/survey_results/")
         stream = BytesIO(response.content)
         return JSONParser().parse(stream)
+
+
+class AttackGoalTestCase(APITestCase, GraphTestMixin):
+    def setUp(self):
+        self.tenant = self.create_tenant()
+        self.tenant1 = Tenant.objects.create(name=self.tenant.tenant)
+        self.user1 = User.objects.create(username='user1')
+        self.tenant1.users.add(self.user1)
+        self.tenant1.save()
+
+    def tearDown(self):
+        self.destroy_tenant_and_data(self.tenant)
+
+    def testAttackGoalViewSet(self):
+        attack_goal, attacker_strong, attacker_weak = self.create_test_attack_goal(self.tenant)
+
+        response = self.client.get("/api/attack_goals/")
+        self.assertEquals(response.status_code, 403)
+
+        goals = self.load_and_parse_api(self.user1, '/api/attack_goals/')
+        self.assertIsNotNone(goals)
+        self.assertEqual(1, len(goals))
+        self.assertEquals(attack_goal.title, goals[0]['title'])
+        self.assertEqual(2, len(goals[0]['attackers']))
+
+    def load_and_parse_api(self, user, url):
+        self.client.force_authenticate(user=user)
+        response = self.client.get(url)
+        stream = BytesIO(response.content)
+        return JSONParser().parse(stream)
+
+    def testAttackGoalGraphson(self):
+        attack_goal, attacker_strong, attacker_weak = self.create_test_attack_goal(self.tenant)
+
+        response = self.client.get("/api/attack_graphson/")
+        self.assertEquals(response.status_code, 403)
+
+        graphson = self.load_and_parse_api(self.user1, '/api/attack_graphson/')
+        self.assertIsNotNone(graphson)
+        self.assertTrue('nodes' in graphson)
+        self.assertTrue('edges' in graphson)
+
+        nodes = graphson['nodes']
+        self.assertTrue(any(attack_goal.title == result['caption'] for result in nodes))
+        validated = 1
+        for method in attack_goal.attack_methods:
+            validated = self.validate_attack_method(method, nodes, validated)
+        for attacker in attack_goal.attackers:
+            self.assertTrue(any(attacker.title == result['caption'] for result in nodes))
+            validated += 1
+        self.assertEquals(len(nodes), validated)
+
+    def validate_attack_method(self, method, nodes, validated):
+        self.assertTrue(any(method.title == result['caption'] for result in nodes))
+        validated += 1
+        for mitigation in method.mitigations:
+            self.assertTrue(any(mitigation.title == result['caption'] for result in nodes))
+            validated += 1
+        for basic_event in method.basic_events:
+            self.assertTrue(any(basic_event.title == result['caption'] for result in nodes))
+            validated += 1
+        for attack_method in method.attack_methods:
+            validated = self.validate_attack_method(attack_method, nodes, validated)
+
+        return validated

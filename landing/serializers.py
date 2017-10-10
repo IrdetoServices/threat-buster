@@ -1,3 +1,5 @@
+from rest_framework.utils.serializer_helpers import BindingDict
+
 __copyright__ = """
 
     Copyright 2017 Irdeto BV
@@ -77,3 +79,56 @@ class SurveyResultsSerializer(serializers.ModelSerializer):
     class Meta:
         model = SurveyResults
         fields = ['pk', 'date', 'tenant', 'survey', 'survey_results']
+
+class NamedSerializer(serializers.Serializer):
+    description = serializers.CharField()
+    uid = serializers.CharField()
+    title = serializers.CharField()
+
+
+class AttackerSerializer(NamedSerializer):
+    pass
+
+
+class MitigationSerializer(NamedSerializer):
+    pass
+
+
+class BasicEventSerializer(NamedSerializer):
+    pass
+
+
+class AttackMethodSerializer(NamedSerializer):
+
+    # This is to allow the nested tree of Attack Methods - static defn doesn't work due to N depth of tree.
+    @property
+    def fields(self):
+        """
+        A dictionary of {field_name: field_instance}.
+        """
+        # `fields` is evaluated lazily. We do this to ensure that we don't
+        # have issues importing modules that use ModelSerializers as fields,
+        # even if Django's app-loading stage has not yet run.
+        if not hasattr(self, '_fields'):
+            self._fields = BindingDict(self)
+            for key, value in self.get_fields().items():
+                self._fields[key] = value
+            self._fields['attack_methods'] = AttackMethodSerializer(many=True)
+        return self._fields
+
+    mitigations = MitigationSerializer(many=True)
+    basic_events = BasicEventSerializer(many=True)
+
+
+class AbstractAttackTreeNodeSerializer(NamedSerializer):
+    mitigations = MitigationSerializer(many=True)
+    basic_events = BasicEventSerializer(many=True)
+    attack_methods = AttackMethodSerializer(many=True)
+
+
+class AttackGoalSerializer(AbstractAttackTreeNodeSerializer):
+    description = serializers.CharField()
+    uid = serializers.CharField()
+    title = serializers.CharField()
+
+    attackers = AttackerSerializer(many=True)

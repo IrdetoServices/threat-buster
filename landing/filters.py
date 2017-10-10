@@ -23,6 +23,17 @@ from rest_framework.filters import BaseFilterBackend
 from rest_framework.permissions import BasePermission, DjangoObjectPermissions
 
 
+class AttackGoalFilter(BaseFilterBackend):
+    def filter_queryset(self, request, queryset, view):
+        user = request.user
+
+        if not user.is_superuser:
+            # TODO add filtering for tenant here
+            pass
+
+        return queryset
+
+
 class TenantFilter(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         user = request.user

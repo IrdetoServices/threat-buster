@@ -178,7 +178,7 @@ PROJECT_ROOT = os.path.abspath(
 )
 
 BOWER_COMPONENTS_ROOT = os.path.join(PROJECT_ROOT, 'components')
-BOWER_INSTALLED_APPS = ('d3#3.3.13', 'jquery#2.2.4', 'nvd3#1.7.1')
+BOWER_INSTALLED_APPS = ('d3#3.4.1', 'jquery#2.2.4', 'nvd3#1.7.1', 'alchemyjs#0.4.2')
 
 if 'EMAIL_HOST' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

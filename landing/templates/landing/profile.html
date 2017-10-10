@@ -18,7 +18,8 @@
             <ul>
                 <li><a href="{% url 'account_change_password' %}">Change Password</a></li>
                 <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
-                <li><a href="{% url 'landing:dashboard' %}">My Reports</a></li>
+                <li><a href="{% url 'landing:attack_goals' %}">Attack Goals</a></li>
+                <li><a href="{% url 'landing:dashboard' %}">Reports</a></li>
                 {% if user.is_superuser %}
                     <li><a href="{% url 'admin:index' %}">Administration</a></li>
                 {% endif %}
