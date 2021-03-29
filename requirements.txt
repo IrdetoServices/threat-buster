@@ -36,7 +36,7 @@ MarkupSafe==0.23
 oauthlib==1.1.1
 pathspec==0.3.4
 psycopg2==2.6.1
-Pygments==2.2.0
+Pygments==2.7.4
 python-dateutil==2.5.3
 python-nvd3==0.14.2
 python-slugify==1.1.4
